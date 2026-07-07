@@ -1,0 +1,57 @@
+{
+  "name": "Mulai Dari Basic — TikTok Carousel",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 5 * * 1,3"
+            }
+          ]
+        }
+      },
+      "id": "schedule-carousel",
+      "name": "Schedule (Mon Wed 12:00 WIB)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "const fs = require('fs');\nconst root = $env.MULAI_DARI_BASIC_ROOT;\nlet topic = 'Git basic 3 command wajib pemula';\n\ntry {\n  const raw = fs.readFileSync(`${root}/calendar/next-topics.json`, 'utf8');\n  const data = JSON.parse(raw);\n  const carousel = data.topics?.find(t => t.suggested_format === 'carousel') || data.topics?.[1] || data.topics?.[0];\n  if (carousel?.topic) topic = carousel.topic;\n} catch {}\n\nreturn [{ json: { topic } }];"
+      },
+      "id": "pick-topic",
+      "name": "Pick carousel topic",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": {
+        "command": "=cd {{ $env.MULAI_DARI_BASIC_ROOT }} && npm run pipeline:carousel -- \"{{ $json.topic }}\" --queue"
+      },
+      "id": "run-pipeline",
+      "name": "Pipeline: generate → render → upload",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [440, 0]
+    }
+  ],
+  "connections": {
+    "Schedule (Mon Wed 12:00 WIB)": {
+      "main": [[{ "node": "Pick carousel topic", "type": "main", "index": 0 }]]
+    },
+    "Pick carousel topic": {
+      "main": [[{ "node": "Pipeline: generate → render → upload", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": [{ "name": "mulaidaribasic" }]
+}

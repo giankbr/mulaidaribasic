@@ -1,0 +1,143 @@
+{
+  "name": "Mulai Dari Basic — Webhook (Hermes / manual)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "mulaidaribasic",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "webhook",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "webhookId": "mulaidaribasic-pipeline"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "reel",
+                    "operator": { "type": "string", "operation": "equals" }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "reel"
+            },
+            {
+              "conditions": {
+                "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "carousel",
+                    "operator": { "type": "string", "operation": "equals" }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "carousel"
+            },
+            {
+              "conditions": {
+                "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.action }}",
+                    "rightValue": "research",
+                    "operator": { "type": "string", "operation": "equals" }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "research"
+            }
+          ]
+        },
+        "options": { "fallbackOutput": "extra" }
+      },
+      "id": "switch-action",
+      "name": "Route by action",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": {
+        "command": "=cd {{ $env.MULAI_DARI_BASIC_ROOT }} && npm run pipeline:reel -- \"{{ $json.body.topic }}\" {{ $json.body.queue ? '--queue' : '' }}"
+      },
+      "id": "run-reel",
+      "name": "Run reel pipeline",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [480, -120]
+    },
+    {
+      "parameters": {
+        "command": "=cd {{ $env.MULAI_DARI_BASIC_ROOT }} && npm run pipeline:carousel -- \"{{ $json.body.topic }}\" {{ $json.body.queue ? '--queue' : '' }}"
+      },
+      "id": "run-carousel",
+      "name": "Run carousel pipeline",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [480, 0]
+    },
+    {
+      "parameters": {
+        "command": "=cd {{ $env.MULAI_DARI_BASIC_ROOT }} && npm run research:topics -- {{ $json.body.input || 'calendar/raw-trends.json' }}"
+      },
+      "id": "run-research",
+      "name": "Run research",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [480, 120]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { ok: true, action: $('Webhook').item.json.body.action, stdout: $json.stdout } }}"
+      },
+      "id": "respond",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [700, 0]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [[{ "node": "Route by action", "type": "main", "index": 0 }]]
+    },
+    "Route by action": {
+      "main": [
+        [{ "node": "Run reel pipeline", "type": "main", "index": 0 }],
+        [{ "node": "Run carousel pipeline", "type": "main", "index": 0 }],
+        [{ "node": "Run research", "type": "main", "index": 0 }]
+      ]
+    },
+    "Run reel pipeline": {
+      "main": [[{ "node": "Respond", "type": "main", "index": 0 }]]
+    },
+    "Run carousel pipeline": {
+      "main": [[{ "node": "Respond", "type": "main", "index": 0 }]]
+    },
+    "Run research": {
+      "main": [[{ "node": "Respond", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "meta": { "templateCredsSetupCompleted": false },
+  "tags": [{ "name": "mulaidaribasic" }]
+}

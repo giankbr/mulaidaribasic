@@ -9,6 +9,10 @@
     "generate:asset": "node scripts/generate-asset.mjs",
     "render:reel": "node scripts/render-reel.mjs",
     "render:microblog": "node scripts/render-microblog.mjs",
+    "upload:tiktok": "node scripts/upload-tiktok.mjs",
+    "pipeline:reel": "node scripts/pipeline-reel.mjs",
+    "pipeline:carousel": "node scripts/pipeline-carousel.mjs",
+    "research:topics": "node scripts/research-topics.mjs",
     "studio": "cd remotion && npm run studio"
   }
 }
