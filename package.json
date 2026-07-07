@@ -1,0 +1,14 @@
+{
+  "name": "mulaidaribasic",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "generate:script": "node scripts/generate-script.mjs",
+    "generate:microblog": "node scripts/generate-microblog.mjs",
+    "generate:asset": "node scripts/generate-asset.mjs",
+    "render:reel": "node scripts/render-reel.mjs",
+    "render:microblog": "node scripts/render-microblog.mjs",
+    "studio": "cd remotion && npm run studio"
+  }
+}

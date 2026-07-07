@@ -1,0 +1,23 @@
+{
+  "timezone": "Asia/Jakarta",
+  "default_platforms": ["tiktok"],
+  "slots": {
+    "instagram": [
+      { "day": "monday", "time": "19:00" },
+      { "day": "wednesday", "time": "18:00" },
+      { "day": "friday", "time": "19:00" }
+    ],
+    "tiktok": [
+      { "day": "tuesday", "time": "12:00" },
+      { "day": "thursday", "time": "12:00" },
+      { "day": "saturday", "time": "10:00" }
+    ]
+  },
+  "video": {
+    "width": 1080,
+    "height": 1920,
+    "max_duration_seconds": 60,
+    "codec": "libx264",
+    "audio_codec": "aac"
+  }
+}

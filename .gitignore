@@ -1,0 +1,22 @@
+# Secrets
+.env
+.env.local
+.env.*.local
+
+# Generated media
+output/
+assets/generated/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+analytics/*.tmp
+
+# Node
+node_modules/
+remotion/node_modules/
+remotion/.render-props.json
+remotion/.slide-*.json
