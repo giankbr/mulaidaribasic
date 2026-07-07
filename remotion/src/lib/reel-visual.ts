@@ -8,6 +8,7 @@ export type ReelVisual =
   | "di"
   | "dto"
   | "api"
+  | "secure"
   | "paths"
   | "learn"
   | "project";
@@ -20,6 +21,9 @@ export function pickReelVisual(headline: string, body?: string): ReelVisual {
   if (/dokumentasi|youtube|tutorial|gratis|roadmap|pemula/.test(text)) return "learn";
   if (/proyek|project|github|deploy|sertifikat|portfolio|rekruter/.test(text)) return "project";
   if (/belajar|fundamental|konsep dasar|mindset/.test(text)) return "learn";
+
+  // Security / encryption (before generic http/api)
+  if (/enkripsi|encrypt|secure|https|ssl|tls|\baman\b|keamanan|kunci|sandi|password|https?:/.test(text)) return "secure";
 
   if (/\bdto\b|validasi|validation|payload|class-validator/.test(text)) return "dto";
   if (/dependency injection|\binject\b|injection|providers?/.test(text)) return "di";

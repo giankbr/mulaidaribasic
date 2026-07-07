@@ -12,7 +12,7 @@ import { ReelSceneDecoration } from "./ReelSceneDecoration";
 import { pickReelVisual } from "../lib/reel-visual";
 
 const { padX: REEL_PAD_X, padTop: REEL_PAD_TOP, padBottom: REEL_PAD_BOTTOM } = REEL_SCENE_SHELL;
-const REEL_CARD_MIN_HEIGHT = 1140;
+const REEL_CARD_MIN_HEIGHT = 960;
 
 export const reelCardStyle: React.CSSProperties = {
   position: "relative",

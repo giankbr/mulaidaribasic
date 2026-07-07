@@ -771,6 +771,121 @@ const ProjectAnim: React.FC = () => {
   );
 };
 
+const SecureAnim: React.FC = () => {
+  const frame = useCurrentFrame();
+  const reveal = useReveal(8);
+  // 0..1 loop: locking progress (plaintext -> encrypted)
+  const cycle = (frame % 120) / 120;
+  const locked = interpolate(cycle, [0, 0.4, 0.6, 1], [0, 1, 1, 0], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  const glow = 0.15 + locked * 0.4;
+
+  const scrambled = "9f#2@kQ7!zX";
+  const plain = "password";
+  const shownRight = locked > 0.5 ? scrambled : plain;
+
+  const chip = (label: string, value: string, accent: boolean): React.ReactNode => (
+    <div
+      style={{
+        padding: "16px 18px",
+        borderRadius: 14,
+        minWidth: 150,
+        border: `1px solid rgba(105,129,237,${accent ? 0.45 : 0.22})`,
+        background: accent
+          ? `linear-gradient(135deg, rgba(105,129,237,0.16), rgba(255,255,255,0.96))`
+          : "#FFFFFF",
+        boxShadow: accent ? `0 0 24px rgba(105,129,237,${glow})` : undefined,
+      }}
+    >
+      <div
+        style={{
+          fontFamily: "var(--font-heading)",
+          fontSize: 10,
+          fontWeight: 700,
+          letterSpacing: "0.12em",
+          color: BRAND.primary,
+          marginBottom: 8,
+        }}
+      >
+        {label}
+      </div>
+      <div
+        style={{
+          fontFamily: "ui-monospace, monospace",
+          fontSize: 16,
+          fontWeight: 600,
+          color: BRAND.text,
+        }}
+      >
+        {value}
+      </div>
+    </div>
+  );
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: 26,
+        height: "100%",
+        opacity: interpolate(reveal, [0, 1], [0, 1]),
+      }}
+    >
+      <div style={{ position: "relative", display: "grid", placeItems: "center", width: 150, height: 150 }}>
+        {[0, 1].map((i) => (
+          <div
+            key={i}
+            style={{
+              position: "absolute",
+              width: 96 + i * 40 + locked * 16,
+              height: 96 + i * 40 + locked * 16,
+              borderRadius: "50%",
+              border: `1px solid rgba(105,129,237,${(i === 0 ? 0.4 : 0.2) * locked})`,
+            }}
+          />
+        ))}
+        <div
+          style={{
+            width: 88,
+            height: 88,
+            borderRadius: 22,
+            background: `linear-gradient(135deg, ${BRAND.primary}, ${BRAND.primaryDeep})`,
+            display: "grid",
+            placeItems: "center",
+            boxShadow: `0 12px 28px rgba(105,129,237,${glow})`,
+          }}
+        >
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
+            <rect x="4" y="10.5" width="16" height="10.5" rx="2.4" fill="#fff" />
+            <path
+              d={
+                locked > 0.5
+                  ? "M8 10.5V8a4 4 0 0 1 8 0v2.5"
+                  : "M8 10.5V8a4 4 0 0 1 7.5-1.9"
+              }
+              stroke="#fff"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+            />
+            <circle cx="12" cy="15.4" r="1.7" fill={BRAND.primary} />
+          </svg>
+        </div>
+      </div>
+
+      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+        {chip("PLAIN", plain, false)}
+        <div style={{ fontSize: 22, color: BRAND.primary, opacity: 0.75 }}>→</div>
+        {chip("ENCRYPTED", shownRight, true)}
+      </div>
+    </div>
+  );
+};
+
 export const ReelCtaCard: React.FC<{ cta: string }> = ({ cta }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -955,6 +1070,7 @@ export const ReelSceneDecoration: React.FC<{
           {visual === "di" && <DiAnim />}
           {visual === "dto" && <DtoAnim />}
           {visual === "api" && <ApiAnim />}
+          {visual === "secure" && <SecureAnim />}
           {visual === "paths" && <PathsAnim />}
           {visual === "learn" && <LearnAnim />}
           {visual === "project" && <ProjectAnim />}
