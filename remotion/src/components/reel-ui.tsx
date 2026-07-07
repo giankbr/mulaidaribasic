@@ -1,5 +1,6 @@
 import React from "react";
-import { BRAND, BRAND_HANDLE } from "../lib/constants";
+import { interpolate, useCurrentFrame } from "remotion";
+import { BRAND, BRAND_HANDLE, SCENES } from "../lib/constants";
 
 export const REEL_PAD_X = 52;
 export const REEL_PAD_TOP = 72;
@@ -10,6 +11,62 @@ export const REEL_SCENE_SHELL = {
   padTop: REEL_PAD_TOP,
   padBottom: REEL_PAD_BOTTOM,
 } as const;
+
+/** IG-story style segmented progress bar, one segment per scene. */
+export const ReelProgress: React.FC = () => {
+  const frame = useCurrentFrame();
+  const segments = [
+    SCENES.hook,
+    SCENES.p1,
+    SCENES.p2,
+    SCENES.p3,
+    SCENES.cta,
+  ];
+
+  return (
+    <div
+      style={{
+        position: "absolute",
+        bottom: 96,
+        left: REEL_PAD_X,
+        right: REEL_PAD_X,
+        display: "flex",
+        gap: 8,
+        zIndex: 3,
+      }}
+    >
+      {segments.map((s, i) => {
+        const fill = interpolate(
+          frame,
+          [s.from, s.from + s.duration],
+          [0, 1],
+          { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+        );
+        return (
+          <div
+            key={i}
+            style={{
+              flex: 1,
+              height: 5,
+              borderRadius: 999,
+              background: "rgba(255,255,255,0.28)",
+              overflow: "hidden",
+            }}
+          >
+            <div
+              style={{
+                width: `${fill * 100}%`,
+                height: "100%",
+                borderRadius: 999,
+                background: "#FFFFFF",
+              }}
+            />
+          </div>
+        );
+      })}
+    </div>
+  );
+};
 
 export const ReelWatermark: React.FC = () => (
   <div

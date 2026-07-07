@@ -5,6 +5,7 @@ import { BrandBackground } from "./components/BrandBackground";
 import { TextScene } from "./components/TextScene";
 import {
   REEL_SCENE_SHELL,
+  ReelProgress,
   ReelTopTagline,
 } from "./components/reel-ui";
 import { ReelCtaCard } from "./components/ReelSceneDecoration";
@@ -86,6 +87,10 @@ export const BasicReel: React.FC<ReelProps> = ({
           </AbsoluteFill>
         </AbsoluteFill>
       </Sequence>
+
+      <AbsoluteFill style={{ zIndex: 4, pointerEvents: "none" }}>
+        <ReelProgress />
+      </AbsoluteFill>
     </AbsoluteFill>
   );
 };
