@@ -44,4 +44,4 @@ npm run studio
 
 - Handle: @mulaidaribasic
 - Website: https://www.virgian.tech
-- Visual: light minimalist, biru `#2563EB`
+- Visual: light minimalist, biru `#3B82F6`

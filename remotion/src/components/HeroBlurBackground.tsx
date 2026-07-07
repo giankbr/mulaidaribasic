@@ -55,13 +55,13 @@ export const HeroBlurBackground: React.FC = () => (
   <AbsoluteFill
     style={{
       backgroundColor: BRAND.bg,
-      backgroundImage: `linear-gradient(180deg, #FFFFFF 0%, ${BRAND.bg} 40%, ${BRAND.primaryLight}55 100%)`,
+      backgroundImage: `linear-gradient(180deg, ${BRAND.primaryLight} 0%, ${BRAND.bg} 45%, ${BRAND.primarySoft}99 100%)`,
       overflow: "hidden",
     }}
   >
-    <Blob color="rgba(37, 99, 235, 0.08)" delaySec={0} style={{ top: "-18%", left: "-12%" }} />
-    <Blob color="rgba(59, 130, 246, 0.06)" delaySec={2} style={{ top: "-14%", right: "-10%" }} />
-    <Blob color="rgba(147, 197, 253, 0.12)" delaySec={4} style={{ bottom: -140, left: "18%" }} />
+    <Blob color="rgba(59, 130, 246, 0.18)" delaySec={0} style={{ top: "-18%", left: "-12%" }} />
+    <Blob color="rgba(96, 165, 250, 0.14)" delaySec={2} style={{ top: "-14%", right: "-10%" }} />
+    <Blob color="rgba(147, 197, 253, 0.22)" delaySec={4} style={{ bottom: -140, left: "18%" }} />
     <AbsoluteFill
       style={{
         backgroundImage: `url(${staticFile("noise.svg")})`,
@@ -73,7 +73,7 @@ export const HeroBlurBackground: React.FC = () => (
     <AbsoluteFill
       style={{
         backgroundImage:
-          "linear-gradient(rgba(37,99,235,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(37,99,235,0.04) 1px, transparent 1px)",
+          "linear-gradient(rgba(59,130,246,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.08) 1px, transparent 1px)",
         backgroundSize: "96px 96px",
         opacity: 0.5,
         maskImage: "linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0) 72%)",

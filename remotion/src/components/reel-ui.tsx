@@ -25,7 +25,7 @@ export const ReelWatermark: React.FC = () => (
       fontWeight: 900,
       lineHeight: 0.86,
       letterSpacing: "-0.032em",
-      color: "rgba(37,99,235,0.04)",
+      color: "rgba(59,130,246,0.07)",
       pointerEvents: "none",
       userSelect: "none",
       whiteSpace: "nowrap",
@@ -56,7 +56,8 @@ export const ReelTopTagline: React.FC = () => (
           fontSize: 11,
           fontWeight: 600,
           letterSpacing: "0.14em",
-          color: BRAND.muted,
+          color: BRAND.primary,
+          opacity: 0.85,
         }}
       >
         {word}
@@ -83,7 +84,8 @@ export const ReelFooter: React.FC = () => (
         fontFamily: "var(--font-body)",
         fontSize: 20,
         fontWeight: 600,
-        color: BRAND.muted,
+        color: BRAND.primary,
+        opacity: 0.75,
         letterSpacing: "0.01em",
       }}
     >
@@ -118,7 +120,7 @@ export const ReelPointBadge: React.FC<{ step: string }> = ({ step }) => {
           fontSize: 22,
           fontWeight: 700,
           color: BRAND.primary,
-          boxShadow: "0 4px 12px rgba(37,99,235,0.08)",
+          boxShadow: "0 4px 12px rgba(59,130,246,0.16)",
         }}
       >
         {step}
@@ -158,7 +160,7 @@ export const ReelHookEyebrow: React.FC<{ label: string }> = ({ label }) => (
       padding: "8px 18px",
       marginBottom: 24,
       borderRadius: 999,
-      border: `1px solid ${BRAND.border}`,
+      border: `1px solid ${BRAND.primarySoft}`,
       background: BRAND.primaryLight,
       fontFamily: "var(--font-heading)",
       fontSize: 12,

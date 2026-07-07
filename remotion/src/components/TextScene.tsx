@@ -23,9 +23,9 @@ export const reelCardStyle: React.CSSProperties = {
   justifyContent: "flex-start",
   alignItems: "flex-start",
   borderRadius: 28,
-  border: `1px solid ${BRAND.border}`,
-  background: BRAND.surface,
-  boxShadow: "0 20px 48px rgba(37,99,235,0.08), 0 1px 0 rgba(255,255,255,0.8) inset",
+  border: `1px solid ${BRAND.primarySoft}`,
+  background: `linear-gradient(165deg, ${BRAND.surface} 0%, ${BRAND.primaryLight} 100%)`,
+  boxShadow: "0 20px 48px rgba(59,130,246,0.14), 0 1px 0 rgba(255,255,255,0.9) inset",
 };
 
 type TextSceneProps = {
@@ -83,7 +83,7 @@ export const TextScene: React.FC<TextSceneProps> = ({
             fontWeight: 700,
             lineHeight: 0.85,
             letterSpacing: "-0.04em",
-            color: "rgba(37,99,235,0.04)",
+            color: "rgba(59,130,246,0.08)",
             pointerEvents: "none",
             userSelect: "none",
           }}

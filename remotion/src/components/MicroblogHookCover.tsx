@@ -196,7 +196,7 @@ const CenterCover: React.FC<HookCoverProps> = (props) => {
               fontWeight: 700,
               letterSpacing: "0.12em",
               textTransform: "uppercase",
-              color: "#2563EB",
+              color: "#3B82F6",
             }}
           >
             {eyebrow}

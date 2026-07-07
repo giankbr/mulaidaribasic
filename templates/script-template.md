@@ -41,7 +41,7 @@
 ```
 
 ## Visual notes
-- Background: light `#F4F8FF` + biru `#2563EB` (match virgian.tech)
+- Background: light `#F4F8FF` + biru `#3B82F6` (match virgian.tech)
 - Thumbnail text: [UPPERCASE 2-3 kata, e.g. HTTP BASIC]
 
 ## Caption

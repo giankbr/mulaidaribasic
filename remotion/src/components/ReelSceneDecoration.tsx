@@ -822,10 +822,10 @@ export const ReelSceneDecoration: React.FC<{
       position: "relative",
       overflow: "hidden",
       borderRadius: 18,
-      border: "1px solid #E2E8F0",
+      border: `1px solid ${BRAND.primarySoft}`,
       background: imageSrc
-        ? "#FFFFFF"
-        : "linear-gradient(180deg, rgba(219,234,254,0.3) 0%, rgba(244,248,255,0.5) 100%)",
+        ? BRAND.surface
+        : `linear-gradient(180deg, ${BRAND.primaryLight} 0%, ${BRAND.bg} 100%)`,
     }}
   >
     <div style={{ position: "absolute", inset: imageSrc ? 0 : "8% 4% 4%", opacity: 0.92 }}>

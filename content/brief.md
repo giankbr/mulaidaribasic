@@ -34,19 +34,19 @@
 - Resolusi: **1080×1920** (9:16, TikTok feed native)
 - Video: MP4, H.264, 30–60 detik
 - Carousel: PNG per slide, upload sebagai photo slideshow di TikTok
-- Visual: light background `#F4F8FF`, aksen biru `#2563EB`
+- Visual: light background `#EFF6FF`, aksen biru `#3B82F6`
 
 ## Brand Kit (Visual)
 
 | Token | Value |
 |-------|-------|
-| Background | `#F4F8FF` |
+| Background | `#EFF6FF` |
 | Surface | `#FFFFFF` |
-| Primary | `#2563EB` |
+| Primary | `#3B82F6` |
 | Primary light | `#DBEAFE` |
 | Text | `#0F172A` |
 | Muted | `#64748B` |
-| Border | `#E2E8F0` |
+| Border | `#BFDBFE` |
 | Font | Plus Jakarta Sans |
 
 ## CTA Templates

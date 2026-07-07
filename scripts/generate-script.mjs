@@ -69,7 +69,7 @@ Topik: "${topic}"
 
 Setiap hook WAJIB pakai **Headline:** dan **Subtitle:** terpisah.
 Setiap poin WAJIB pakai **Judul:** (6-10 kata) dan **Isi:** (2-3 kalimat, 24-40 kata) terpisah.
-Visual notes: light background, biru #2563EB, match virgian.tech.
+Visual notes: light background, biru #3B82F6, match virgian.tech.
 Thumbnail text: uppercase singkat (e.g. HTTP BASIC).
 CTA: Follow @mulaidaribasic / Save buat belajar nanti / Share ke temen yang baru mulai.
 Jangan pakai asterisk untuk italic. Kalimat pakai koma/titik biasa. Dilarang em dash (—), --, dan ---.
