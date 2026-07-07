@@ -2,15 +2,13 @@ import React from "react";
 import { AbsoluteFill, Sequence } from "remotion";
 import { loadFont as loadPlusJakarta } from "@remotion/google-fonts/PlusJakartaSans";
 import { BrandBackground } from "./components/BrandBackground";
-import { TextScene, reelCardStyle } from "./components/TextScene";
+import { TextScene } from "./components/TextScene";
 import {
   REEL_SCENE_SHELL,
-  ReelFooter,
-  ReelHookEyebrow,
   ReelTopTagline,
 } from "./components/reel-ui";
-import { ReelSceneDecoration } from "./components/ReelSceneDecoration";
-import { BRAND, SCENES, type ReelProps } from "./lib/constants";
+import { ReelCtaCard } from "./components/ReelSceneDecoration";
+import { SCENES, type ReelProps } from "./lib/constants";
 
 const { fontFamily: headingFont } = loadPlusJakarta("normal", {
   weights: ["700", "800"],
@@ -26,7 +24,6 @@ export const BasicReel: React.FC<ReelProps> = ({
   hookSubtitle,
   points,
   cta,
-  thumbnailText,
   visualAssets,
 }) => {
   return (
@@ -85,43 +82,10 @@ export const BasicReel: React.FC<ReelProps> = ({
               padding: `${REEL_SCENE_SHELL.padTop + 24}px ${REEL_SCENE_SHELL.padX}px ${REEL_SCENE_SHELL.padBottom}px`,
             }}
           >
-            <div style={{ ...reelCardStyle, padding: "48px 36px 52px" }}>
-              <ReelHookEyebrow label="@mulaidaribasic" />
-              <div
-                style={{
-                  fontFamily: headingFont,
-                  fontSize: 48,
-                  fontWeight: 800,
-                  lineHeight: 1.08,
-                  letterSpacing: "-0.03em",
-                  color: BRAND.text,
-                  width: "100%",
-                }}
-              >
-                {thumbnailText}
-              </div>
-              <div
-                style={{
-                  marginTop: 24,
-                  fontFamily: bodyFont,
-                  fontSize: 32,
-                  lineHeight: 1.45,
-                  fontWeight: 600,
-                  color: BRAND.muted,
-                  width: "100%",
-                }}
-              >
-                {cta}
-              </div>
-              <ReelSceneDecoration visual="cta" ctaLabel={cta} />
-            </div>
+            <ReelCtaCard cta={cta} />
           </AbsoluteFill>
         </AbsoluteFill>
       </Sequence>
-
-      <AbsoluteFill style={{ zIndex: 4, pointerEvents: "none" }}>
-        <ReelFooter />
-      </AbsoluteFill>
     </AbsoluteFill>
   );
 };

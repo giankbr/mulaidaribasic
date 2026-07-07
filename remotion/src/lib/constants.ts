@@ -25,19 +25,20 @@ export const REEL_DURATION_SEC = 52;
 export const REEL_DURATION_FRAMES = REEL_FPS * REEL_DURATION_SEC;
 
 export const BRAND = {
-  bg: "#EFF6FF",
+  bg: "#EEF1FD",
   surface: "#FFFFFF",
-  primary: "#3B82F6",
-  primaryLight: "#DBEAFE",
-  primarySoft: "#BFDBFE",
+  primary: "#6981ED",
+  primaryDeep: "#4453C6",
+  primaryLight: "#E4E8FC",
+  primarySoft: "#C3CCF7",
   text: "#0F172A",
   muted: "#475569",
-  border: "#BFDBFE",
+  border: "#C3CCF7",
   // aliases for shared animation code
-  indigo: "#3B82F6",
-  indigoLight: "#60A5FA",
-  violet: "#93C5FD",
-  sky: "#3B82F6",
+  indigo: "#6981ED",
+  indigoLight: "#8B9BF2",
+  violet: "#A5B4F5",
+  sky: "#6981ED",
 } as const;
 
 export const BRAND_HANDLE = "@mulaidaribasic";

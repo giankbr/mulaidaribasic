@@ -9,7 +9,7 @@ export const BrandBackground: React.FC = () => {
   return (
     <AbsoluteFill
       style={{
-        background: `linear-gradient(165deg, ${BRAND.primaryLight} 0%, ${BRAND.bg} 38%, ${BRAND.primarySoft}88 100%)`,
+        background: `linear-gradient(165deg, ${BRAND.primary} 0%, ${BRAND.indigo} 45%, ${BRAND.primaryDeep} 100%)`,
         overflow: "hidden",
       }}
     >
@@ -18,21 +18,21 @@ export const BrandBackground: React.FC = () => {
           position: "absolute",
           inset: 0,
           backgroundImage: `url(${staticFile("noise.svg")})`,
-          opacity: 0.035,
-          mixBlendMode: "multiply",
+          opacity: 0.05,
+          mixBlendMode: "overlay",
         }}
       />
       <div
         style={{
           position: "absolute",
-          top: `${6 + drift * 0.06}%`,
+          top: `${4 + drift * 0.06}%`,
           left: "50%",
           transform: "translateX(-50%)",
-          width: "95vw",
-          height: "45vh",
+          width: "100vw",
+          height: "48vh",
           borderRadius: "50%",
-          background: `radial-gradient(ellipse, ${BRAND.primary}44 0%, transparent 68%)`,
-          filter: "blur(56px)",
+          background: `radial-gradient(ellipse, ${BRAND.indigoLight}88 0%, transparent 66%)`,
+          filter: "blur(64px)",
         }}
       />
       <div
@@ -40,30 +40,30 @@ export const BrandBackground: React.FC = () => {
           position: "absolute",
           top: `${-8 + drift * 0.15}%`,
           right: `${-6 - drift * 0.06}%`,
-          width: "58vw",
-          height: "58vw",
+          width: "60vw",
+          height: "60vw",
           borderRadius: "50%",
-          background: `radial-gradient(circle, ${BRAND.indigoLight}55 0%, transparent 65%)`,
+          background: `radial-gradient(circle, ${BRAND.indigoLight}66 0%, transparent 64%)`,
+          filter: "blur(72px)",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          bottom: `${-12 + drift * 0.1}%`,
+          left: "6%",
+          width: "56vw",
+          height: "56vw",
+          borderRadius: "50%",
+          background: `radial-gradient(circle, ${BRAND.primaryDeep}99 0%, transparent 70%)`,
           filter: "blur(64px)",
         }}
       />
       <div
         style={{
           position: "absolute",
-          bottom: `${-10 + drift * 0.1}%`,
-          left: "8%",
-          width: "52vw",
-          height: "52vw",
-          borderRadius: "50%",
-          background: `radial-gradient(circle, ${BRAND.violet}66 0%, transparent 70%)`,
-          filter: "blur(56px)",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
           inset: 0,
-          background: `linear-gradient(180deg, ${BRAND.primaryLight}55 0%, transparent 42%, ${BRAND.primary}18 100%)`,
+          background: `linear-gradient(180deg, rgba(255,255,255,0.08) 0%, transparent 40%, ${BRAND.primaryDeep}55 100%)`,
         }}
       />
     </AbsoluteFill>

@@ -771,6 +771,120 @@ const ProjectAnim: React.FC = () => {
   );
 };
 
+export const ReelCtaCard: React.FC<{ cta: string }> = ({ cta }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const enter = spring({ frame, fps, config: { damping: 22, stiffness: 120 } });
+  const opacity = interpolate(enter, [0, 1], [0, 1]);
+  const y = interpolate(enter, [0, 1], [36, 0]);
+  const pulse = interpolate(frame % 80, [0, 40, 80], [0.15, 0.4, 0.15]);
+  const iconKind = ctaIconKind(cta);
+
+  // Drop the "Follow @handle" clause (the pill already shows it) so the
+  // headline stays contextual instead of a bare thumbnail label.
+  const headline =
+    cta
+      .split(/\bfollow\b/i)[0]
+      .trim()
+      .replace(/[.!,\s]+$/, "") || cta;
+
+  return (
+    <div
+      style={{
+        position: "relative",
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        textAlign: "center",
+        gap: 30,
+        padding: "72px 52px 80px",
+        borderRadius: 32,
+        border: `1px solid ${BRAND.primarySoft}`,
+        background: `linear-gradient(165deg, ${BRAND.surface} 0%, ${BRAND.primaryLight} 100%)`,
+        boxShadow: "0 24px 60px rgba(68,83,198,0.22), 0 1px 0 rgba(255,255,255,0.9) inset",
+        opacity,
+        transform: `translateY(${y}px)`,
+      }}
+    >
+      <div style={{ position: "relative", display: "grid", placeItems: "center", width: 220, height: 220 }}>
+        {[0, 1, 2].map((i) => (
+          <div
+            key={i}
+            style={{
+              position: "absolute",
+              width: 120 + i * 60 + pulse * 24,
+              height: 120 + i * 60 + pulse * 24,
+              borderRadius: "50%",
+              border: `1px solid ${BRAND.primary}${i === 0 ? "55" : i === 1 ? "33" : "1f"}`,
+            }}
+          />
+        ))}
+        <div
+          style={{
+            width: 92,
+            height: 92,
+            borderRadius: 24,
+            background: `linear-gradient(135deg, ${BRAND.primary}, ${BRAND.primaryDeep})`,
+            display: "grid",
+            placeItems: "center",
+            color: "#fff",
+            boxShadow: `0 12px 28px ${BRAND.primary}55`,
+          }}
+        >
+          <CtaIcon kind={iconKind} size={44} />
+        </div>
+      </div>
+
+      <div
+        style={{
+          fontFamily: "var(--font-heading)",
+          fontSize: 48,
+          fontWeight: 800,
+          lineHeight: 1.12,
+          letterSpacing: "-0.03em",
+          color: BRAND.text,
+          maxWidth: 640,
+        }}
+      >
+        {headline}
+      </div>
+
+      <div
+        style={{
+          fontFamily: "var(--font-body)",
+          fontSize: 30,
+          lineHeight: 1.4,
+          fontWeight: 600,
+          color: BRAND.muted,
+        }}
+      >
+        Belajar IT fundamental, mulai dari basic.
+      </div>
+
+      <div
+        style={{
+          marginTop: 6,
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 10,
+          padding: "16px 30px",
+          borderRadius: 999,
+          background: `linear-gradient(135deg, ${BRAND.primary}, ${BRAND.primaryDeep})`,
+          color: "#fff",
+          fontFamily: "var(--font-heading)",
+          fontSize: 28,
+          fontWeight: 700,
+          boxShadow: `0 10px 24px ${BRAND.primary}44`,
+        }}
+      >
+        <CtaIcon kind="follow" size={26} />
+        Follow @mulaidaribasic
+      </div>
+    </div>
+  );
+};
+
 const CtaPulse: React.FC<{ label?: string }> = ({ label }) => {
   const frame = useCurrentFrame();
   const pulse = interpolate(frame % 80, [0, 40, 80], [0.15, 0.35, 0.15]);

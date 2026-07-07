@@ -1,5 +1,5 @@
 import React from "react";
-import { BRAND, BRAND_HANDLE, BRAND_TAGLINE } from "../lib/constants";
+import { BRAND, BRAND_HANDLE } from "../lib/constants";
 
 export const REEL_PAD_X = 52;
 export const REEL_PAD_TOP = 72;
@@ -35,36 +35,150 @@ export const ReelWatermark: React.FC = () => (
   </div>
 );
 
-export const ReelTopTagline: React.FC = () => (
-  <div
-    style={{
-      position: "absolute",
-      top: REEL_SCENE_SHELL.padTop,
-      left: REEL_SCENE_SHELL.padX,
-      right: REEL_SCENE_SHELL.padX,
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      zIndex: 3,
-    }}
-  >
-    {BRAND_TAGLINE.split(" ").map((word) => (
-      <span
-        key={word}
+export type WatermarkVariant = "badge" | "glass" | "dot" | "handle";
+
+// Change this to switch the watermark style across all reels.
+export const WATERMARK_VARIANT: WatermarkVariant = "handle";
+
+const wmWrap: React.CSSProperties = {
+  position: "absolute",
+  top: 44,
+  left: REEL_SCENE_SHELL.padX,
+  display: "flex",
+  alignItems: "center",
+  gap: 12,
+  zIndex: 3,
+};
+
+export const ReelBrandMark: React.FC<{ variant?: WatermarkVariant }> = ({
+  variant = WATERMARK_VARIANT,
+}) => {
+  if (variant === "glass") {
+    return (
+      <div
         style={{
-          fontFamily: "var(--font-body)",
-          fontSize: 11,
-          fontWeight: 600,
-          letterSpacing: "0.14em",
-          color: BRAND.primary,
-          opacity: 0.85,
+          ...wmWrap,
+          gap: 10,
+          padding: "8px 16px 8px 8px",
+          borderRadius: 999,
+          background: "rgba(255,255,255,0.16)",
+          border: "1px solid rgba(255,255,255,0.35)",
+          backdropFilter: "blur(6px)",
         }}
       >
-        {word}
+        <div
+          style={{
+            width: 32,
+            height: 32,
+            borderRadius: 9,
+            background: "#FFFFFF",
+            display: "grid",
+            placeItems: "center",
+            fontFamily: "var(--font-heading)",
+            fontSize: 18,
+            fontWeight: 800,
+            color: BRAND.primary,
+          }}
+        >
+          m
+        </div>
+        <span
+          style={{
+            fontFamily: "var(--font-heading)",
+            fontSize: 21,
+            fontWeight: 700,
+            letterSpacing: "-0.01em",
+            color: "#FFFFFF",
+          }}
+        >
+          mulaidaribasic
+        </span>
+      </div>
+    );
+  }
+
+  if (variant === "dot") {
+    return (
+      <div style={{ ...wmWrap, gap: 10 }}>
+        <div
+          style={{
+            width: 12,
+            height: 12,
+            borderRadius: "50%",
+            background: "#FFFFFF",
+            boxShadow: "0 0 0 4px rgba(255,255,255,0.25)",
+          }}
+        />
+        <span
+          style={{
+            fontFamily: "var(--font-heading)",
+            fontSize: 23,
+            fontWeight: 700,
+            letterSpacing: "-0.01em",
+            color: "#FFFFFF",
+          }}
+        >
+          mulaidaribasic
+        </span>
+      </div>
+    );
+  }
+
+  if (variant === "handle") {
+    return (
+      <div style={wmWrap}>
+        <span
+          style={{
+            fontFamily: "var(--font-heading)",
+            fontSize: 23,
+            fontWeight: 700,
+            letterSpacing: "-0.01em",
+            color: "#FFFFFF",
+          }}
+        >
+          <span style={{ opacity: 0.6 }}>@</span>mulaidaribasic
+        </span>
+      </div>
+    );
+  }
+
+  // badge (default)
+  return (
+    <div style={wmWrap}>
+      <div
+        style={{
+          width: 40,
+          height: 40,
+          borderRadius: 11,
+          background: "#FFFFFF",
+          display: "grid",
+          placeItems: "center",
+          fontFamily: "var(--font-heading)",
+          fontSize: 22,
+          fontWeight: 800,
+          color: BRAND.primary,
+          boxShadow: "0 4px 14px rgba(0,0,0,0.12)",
+        }}
+      >
+        m
+      </div>
+      <span
+        style={{
+          fontFamily: "var(--font-heading)",
+          fontSize: 22,
+          fontWeight: 700,
+          letterSpacing: "-0.01em",
+          color: "#FFFFFF",
+        }}
+      >
+        mulaidaribasic
       </span>
-    ))}
-  </div>
-);
+    </div>
+  );
+};
+
+/** @deprecated kept for compatibility — use ReelBrandMark */
+export const ReelTopTagline = ReelBrandMark;
 
 export const ReelFooter: React.FC = () => (
   <div
@@ -83,9 +197,9 @@ export const ReelFooter: React.FC = () => (
       style={{
         fontFamily: "var(--font-body)",
         fontSize: 20,
-        fontWeight: 600,
-        color: BRAND.primary,
-        opacity: 0.75,
+        fontWeight: 700,
+        color: "#FFFFFF",
+        opacity: 0.9,
         letterSpacing: "0.01em",
       }}
     >
@@ -94,63 +208,28 @@ export const ReelFooter: React.FC = () => (
   </div>
 );
 
-export const ReelPointBadge: React.FC<{ step: string }> = ({ step }) => {
-  const n = parseInt(step, 10);
-
-  return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: 14,
-        marginBottom: 28,
-        alignSelf: "flex-start",
-      }}
-    >
-      <div
-        style={{
-          width: 54,
-          height: 54,
-          borderRadius: 14,
-          border: `1px solid ${BRAND.primary}55`,
-          background: `linear-gradient(165deg, ${BRAND.primaryLight}, ${BRAND.surface})`,
-          display: "grid",
-          placeItems: "center",
-          fontFamily: "var(--font-heading)",
-          fontSize: 22,
-          fontWeight: 700,
-          color: BRAND.primary,
-          boxShadow: "0 4px 12px rgba(59,130,246,0.16)",
-        }}
-      >
-        {step}
-      </div>
-      <div>
-        <div
-          style={{
-            fontFamily: "var(--font-heading)",
-            fontSize: 12,
-            fontWeight: 700,
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            color: BRAND.primary,
-          }}
-        >
-          Poin #{n}
-        </div>
-        <div
-          style={{
-            marginTop: 8,
-            width: 56,
-            height: 2,
-            borderRadius: 999,
-            background: `linear-gradient(90deg, ${BRAND.primary}, transparent)`,
-          }}
-        />
-      </div>
-    </div>
-  );
-};
+export const ReelPointBadge: React.FC<{ step: string }> = ({ step }) => (
+  <div
+    style={{
+      width: 54,
+      height: 54,
+      borderRadius: 14,
+      border: `1px solid ${BRAND.primary}55`,
+      background: `linear-gradient(165deg, ${BRAND.primaryLight}, ${BRAND.surface})`,
+      display: "grid",
+      placeItems: "center",
+      marginBottom: 28,
+      alignSelf: "flex-start",
+      fontFamily: "var(--font-heading)",
+      fontSize: 22,
+      fontWeight: 700,
+      color: BRAND.primary,
+      boxShadow: "0 4px 12px rgba(59,130,246,0.16)",
+    }}
+  >
+    {step}
+  </div>
+);
 
 export const ReelHookEyebrow: React.FC<{ label: string }> = ({ label }) => (
   <span
