@@ -34,7 +34,7 @@ function resolveInputPath(scriptPath) {
 const scriptArg = process.argv[2];
 const flags = new Set(process.argv.slice(3).filter((a) => a.startsWith("--")));
 if (!scriptArg) {
-  console.error("Usage: node scripts/render-reel.mjs <script.md> [output.mp4] [--skip-ai] [--force-ai]");
+  console.error("Usage: node scripts/render-reel.mjs <script.md> [output.mp4] [--ai] [--force-ai]");
   process.exit(1);
 }
 
@@ -57,11 +57,11 @@ const props = {
   thumbnailText: parsed.thumbnailText,
 };
 
-const skipAi = flags.has("--skip-ai");
+const useAi = flags.has("--ai") || flags.has("--force-ai");
 const forceAi = flags.has("--force-ai");
-const visualAssets = skipAi
-  ? syncExistingReelVisuals(slug)
-  : await ensureReelVisuals(slug, parsed, { force: forceAi });
+const visualAssets = useAi
+  ? await ensureReelVisuals(slug, parsed, { force: forceAi })
+  : syncExistingReelVisuals(slug);
 if (Object.keys(visualAssets).length > 0) {
   props.visualAssets = visualAssets;
 }

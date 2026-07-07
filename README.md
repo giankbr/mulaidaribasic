@@ -8,7 +8,7 @@ Format native **TikTok 9:16** (1080×1920) — video reels + photo carousel.
 
 ```bash
 cp .env.example .env
-# Isi ZAI_CODING_API_KEY, GEMINI_API_KEY
+# Isi ZAI_CODING_API_KEY (GEMINI_API_KEY opsional — render default pakai SVG)
 
 cd remotion && npm install && cd ..
 
@@ -24,7 +24,10 @@ npm run generate:microblog -- "Git basic 3 command wajib pemula"
 # Render microblog
 npm run render:microblog -- microblog/2026-07-07-git-basic-3-command-wajib-pemula.md
 
-# Generate ilustrasi (Gemini)
+# Render dengan AI image (opsional, butuh GEMINI_API_KEY + billing)
+npm run render:reel -- scripts/xxx.md --ai
+
+# Generate ilustrasi manual (Gemini)
 npm run generate:asset -- "Git branches minimalist illustration"
 
 # Preview

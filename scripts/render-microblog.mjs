@@ -44,7 +44,7 @@ function resolveInputPath(input) {
 const input = process.argv[2];
 const flags = new Set(process.argv.slice(3).filter((a) => a.startsWith("--")));
 if (!input) {
-  console.error("Usage: node scripts/render-microblog.mjs microblog/<file>.md [--skip-ai] [--force-ai]");
+  console.error("Usage: node scripts/render-microblog.mjs microblog/<file>.md [--ai] [--force-ai]");
   process.exit(1);
 }
 
@@ -71,11 +71,11 @@ console.log(
 );
 console.log(`  Out:    ${outDir}/`);
 
-const skipAi = flags.has("--skip-ai");
+const useAi = flags.has("--ai") || flags.has("--force-ai");
 const forceAi = flags.has("--force-ai");
-const slideAssets = skipAi
-  ? syncExistingMicroblogVisuals(slug, slides.length)
-  : await ensureMicroblogVisuals(slug, slides, { force: forceAi });
+const slideAssets = useAi
+  ? await ensureMicroblogVisuals(slug, slides, { force: forceAi })
+  : syncExistingMicroblogVisuals(slug, slides.length);
 
 for (const slide of slides) {
   const num = String(slide.slideIndex).padStart(2, "0");
