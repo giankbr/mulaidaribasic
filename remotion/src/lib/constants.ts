@@ -3,6 +3,13 @@ export type ReelPoint = {
   body?: string;
 };
 
+export type ReelVisualAssets = {
+  hook?: string;
+  p1?: string;
+  p2?: string;
+  p3?: string;
+};
+
 export type ReelProps = {
   title: string;
   hook: string;
@@ -10,6 +17,7 @@ export type ReelProps = {
   points: ReelPoint[];
   cta: string;
   thumbnailText: string;
+  visualAssets?: ReelVisualAssets;
 };
 
 export const REEL_FPS = 30;

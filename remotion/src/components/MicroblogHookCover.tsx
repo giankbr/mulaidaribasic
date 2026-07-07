@@ -21,6 +21,7 @@ type HookCoverProps = {
   slideTotal: number;
   visual: MicroblogVisualType;
   visualSeed?: string;
+  assetPath?: string;
   hasDetails: boolean;
 };
 
@@ -47,11 +48,12 @@ const VisualSlot: React.FC<{
   slideIndex: number;
   visual: MicroblogVisualType;
   visualSeed?: string;
+  assetPath?: string;
   framed?: boolean;
   scale?: number;
   emphasis?: "normal" | "hero";
   fill?: boolean;
-}> = ({ height = 290, slideIndex, visual, visualSeed, framed, scale = 1, emphasis = "normal", fill }) => {
+}> = ({ height = 290, slideIndex, visual, visualSeed, assetPath, framed, scale = 1, emphasis = "normal", fill }) => {
   const inner = (
     <MicroblogVisual
       slideIndex={slideIndex}
@@ -59,6 +61,7 @@ const VisualSlot: React.FC<{
       visual={visual}
       visualSeed={visualSeed}
       emphasis={emphasis}
+      assetPath={assetPath}
     />
   );
 
@@ -118,6 +121,7 @@ const ClassicCover: React.FC<HookCoverProps> = (props) => {
           slideIndex={slideIndex}
           visual={visual}
           visualSeed={visualSeed}
+          assetPath={props.assetPath}
         />
       </div>
     </>
@@ -156,6 +160,7 @@ const HeroCover: React.FC<HookCoverProps> = (props) => {
           slideIndex={slideIndex}
           visual={visual}
           visualSeed={visualSeed}
+          assetPath={props.assetPath}
         />
       </div>
     </div>
@@ -219,6 +224,7 @@ const CenterCover: React.FC<HookCoverProps> = (props) => {
           slideIndex={slideIndex}
           visual={visual}
           visualSeed={visualSeed}
+          assetPath={props.assetPath}
           emphasis="hero"
         />
       </div>

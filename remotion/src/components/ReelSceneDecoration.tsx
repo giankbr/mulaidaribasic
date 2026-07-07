@@ -2,6 +2,7 @@ import React from "react";
 import { interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { BRAND } from "../lib/constants";
 import { pickReelVisual, type ReelVisual } from "../lib/reel-visual";
+import { AiIllustration } from "./AiIllustration";
 
 export { pickReelVisual, type ReelVisual };
 
@@ -597,6 +598,179 @@ const PipelineAnim: React.FC = () => {
   );
 };
 
+const PathsAnim: React.FC = () => {
+  const frame = useCurrentFrame();
+  const reveal = useReveal(8);
+  const pulse = interpolate(frame % 70, [0, 35, 70], [0.3, 0.85, 0.3]);
+
+  const paths = [
+    { label: "Bootcamp", sub: "mentor + cohort", accent: false },
+    { label: "Belajar mandiri", sub: "docs + proyek", accent: true },
+  ];
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "stretch",
+        justifyContent: "center",
+        gap: 20,
+        height: "100%",
+        paddingTop: 20,
+        opacity: interpolate(reveal, [0, 1], [0, 1]),
+      }}
+    >
+      {paths.map((path, i) => (
+        <div
+          key={path.label}
+          style={{
+            flex: 1,
+            maxWidth: 200,
+            padding: "22px 18px",
+            borderRadius: 16,
+            border: `1px solid rgba(37,99,235,${path.accent ? 0.35 + pulse * 0.35 : 0.2})`,
+            background: path.accent
+              ? `linear-gradient(160deg, rgba(37,99,235,0.12), rgba(255,255,255,0.98))`
+              : "#FFFFFF",
+            transform: `translateY(${floatAt(frame, i * 14, 5)}px)`,
+            boxShadow: path.accent ? `0 0 28px rgba(37,99,235,${0.12 + pulse * 0.2})` : undefined,
+          }}
+        >
+          <div style={{ fontFamily: "var(--font-heading)", fontSize: 15, fontWeight: 800, color: BRAND.text }}>
+            {path.label}
+          </div>
+          <div style={{ marginTop: 8, fontFamily: "var(--font-body)", fontSize: 12, fontWeight: 600, color: BRAND.muted, lineHeight: 1.4 }}>
+            {path.sub}
+          </div>
+        </div>
+      ))}
+      <div
+        style={{
+          alignSelf: "center",
+          padding: "12px 16px",
+          borderRadius: 999,
+          border: "1px solid rgba(37,99,235,0.25)",
+          background: "#FFFFFF",
+          fontFamily: "var(--font-heading)",
+          fontSize: 13,
+          fontWeight: 700,
+          color: BRAND.primary,
+          whiteSpace: "nowrap",
+        }}
+      >
+        → Developer
+      </div>
+    </div>
+  );
+};
+
+const LearnAnim: React.FC = () => {
+  const frame = useCurrentFrame();
+  const reveal = useReveal(6);
+  const resources = [
+    { label: "Docs", icon: "📄" },
+    { label: "YouTube", icon: "▶" },
+    { label: "Basic", icon: "✓" },
+  ];
+  const active = Math.floor((frame / 28) % resources.length);
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 12,
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100%",
+        paddingTop: 16,
+        opacity: interpolate(reveal, [0, 1], [0, 1]),
+      }}
+    >
+      {resources.map((item, i) => (
+        <div
+          key={item.label}
+          style={{
+            width: 300,
+            padding: "14px 18px",
+            borderRadius: 14,
+            border: `1px solid rgba(37,99,235,${i === active ? 0.5 : 0.18})`,
+            background: i === active ? "rgba(219,234,254,0.55)" : "#FFFFFF",
+            display: "flex",
+            alignItems: "center",
+            gap: 14,
+            transform: `translateX(${floatAt(frame, i * 10, 4)}px)`,
+            boxShadow: i === active ? "0 0 22px rgba(37,99,235,0.15)" : undefined,
+          }}
+        >
+          <div
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: 10,
+              background: "rgba(37,99,235,0.1)",
+              display: "grid",
+              placeItems: "center",
+              fontSize: 16,
+            }}
+          >
+            {item.icon}
+          </div>
+          <div style={{ fontFamily: "var(--font-heading)", fontSize: 16, fontWeight: 700, color: BRAND.text }}>
+            {item.label}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+const ProjectAnim: React.FC = () => {
+  const frame = useCurrentFrame();
+  const reveal = useReveal(8);
+  const steps = ["Idea", "Code", "GitHub", "Live"];
+  const progress = Math.floor((frame / 30) % steps.length);
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: 12,
+        height: "100%",
+        paddingTop: 20,
+        opacity: interpolate(reveal, [0, 1], [0, 1]),
+      }}
+    >
+      {steps.map((step, i) => (
+        <React.Fragment key={step}>
+          <div
+            style={{
+              padding: "14px 16px",
+              minWidth: 88,
+              borderRadius: 14,
+              border: `1px solid rgba(37,99,235,${i <= progress ? 0.45 : 0.15})`,
+              background: i <= progress ? "rgba(219,234,254,0.5)" : "#FFFFFF",
+              fontFamily: "var(--font-heading)",
+              fontSize: 14,
+              fontWeight: 700,
+              color: i <= progress ? BRAND.text : BRAND.muted,
+              textAlign: "center",
+              transform: `translateY(${floatAt(frame, i * 12, 4)}px)`,
+            }}
+          >
+            {step}
+          </div>
+          {i < steps.length - 1 ? (
+            <div style={{ fontSize: 18, color: BRAND.primary, opacity: i < progress ? 0.9 : 0.35 }}>→</div>
+          ) : null}
+        </React.Fragment>
+      ))}
+    </div>
+  );
+};
+
 const CtaPulse: React.FC<{ label?: string }> = ({ label }) => {
   const frame = useCurrentFrame();
   const pulse = interpolate(frame % 80, [0, 40, 80], [0.15, 0.35, 0.15]);
@@ -637,7 +811,8 @@ const CtaPulse: React.FC<{ label?: string }> = ({ label }) => {
 export const ReelSceneDecoration: React.FC<{
   visual: ReelVisual;
   ctaLabel?: string;
-}> = ({ visual, ctaLabel }) => (
+  imageSrc?: string;
+}> = ({ visual, ctaLabel, imageSrc }) => (
   <div
     style={{
       flex: 1,
@@ -648,19 +823,30 @@ export const ReelSceneDecoration: React.FC<{
       overflow: "hidden",
       borderRadius: 18,
       border: "1px solid #E2E8F0",
-      background: "linear-gradient(180deg, rgba(219,234,254,0.3) 0%, rgba(244,248,255,0.5) 100%)",
+      background: imageSrc
+        ? "#FFFFFF"
+        : "linear-gradient(180deg, rgba(219,234,254,0.3) 0%, rgba(244,248,255,0.5) 100%)",
     }}
   >
-    <div style={{ position: "absolute", inset: "8% 4% 4%", opacity: 0.92 }}>
-      {visual === "hook" && <HookLayers />}
-      {visual === "nodes" && <NodesAnim />}
-      {visual === "stack" && <StackAnim />}
-      {visual === "pipeline" && <PipelineAnim />}
-      {visual === "layers" && <LayersAnim />}
-      {visual === "di" && <DiAnim />}
-      {visual === "dto" && <DtoAnim />}
-      {visual === "api" && <ApiAnim />}
-      {visual === "cta" && <CtaPulse label={ctaLabel} />}
+    <div style={{ position: "absolute", inset: imageSrc ? 0 : "8% 4% 4%", opacity: 0.92 }}>
+      {imageSrc ? (
+        <AiIllustration src={imageSrc} />
+      ) : (
+        <>
+          {visual === "hook" && <HookLayers />}
+          {visual === "nodes" && <NodesAnim />}
+          {visual === "stack" && <StackAnim />}
+          {visual === "pipeline" && <PipelineAnim />}
+          {visual === "layers" && <LayersAnim />}
+          {visual === "di" && <DiAnim />}
+          {visual === "dto" && <DtoAnim />}
+          {visual === "api" && <ApiAnim />}
+          {visual === "paths" && <PathsAnim />}
+          {visual === "learn" && <LearnAnim />}
+          {visual === "project" && <ProjectAnim />}
+          {visual === "cta" && <CtaPulse label={ctaLabel} />}
+        </>
+      )}
     </div>
   </div>
 );

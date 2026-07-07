@@ -1,5 +1,5 @@
 import React from "react";
-import { BRAND, BRAND_HANDLE, BRAND_TAGLINE, BRAND_WEBSITE } from "../lib/constants";
+import { BRAND, BRAND_HANDLE, BRAND_TAGLINE } from "../lib/constants";
 
 export const REEL_PAD_X = 52;
 export const REEL_PAD_TOP = 72;
@@ -73,15 +73,22 @@ export const ReelFooter: React.FC = () => (
       left: REEL_SCENE_SHELL.padX,
       right: REEL_SCENE_SHELL.padX,
       display: "flex",
-      justifyContent: "space-between",
+      justifyContent: "flex-end",
       alignItems: "center",
       zIndex: 4,
     }}
   >
-    <span style={{ fontSize: 12, color: BRAND.muted, letterSpacing: "0.02em" }}>
-      {BRAND_WEBSITE}
+    <span
+      style={{
+        fontFamily: "var(--font-body)",
+        fontSize: 20,
+        fontWeight: 600,
+        color: BRAND.muted,
+        letterSpacing: "0.01em",
+      }}
+    >
+      {BRAND_HANDLE}
     </span>
-    <span style={{ fontSize: 12, color: BRAND.muted }}>{BRAND_HANDLE}</span>
   </div>
 );
 

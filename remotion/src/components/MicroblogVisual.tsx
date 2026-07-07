@@ -5,6 +5,7 @@ import {
   type MicroblogVisualType,
   pickMicroblogVisual,
 } from "../lib/microblog";
+import { AiIllustration } from "./AiIllustration";
 
 type Props = {
   slideIndex: number;
@@ -13,6 +14,7 @@ type Props = {
   visualSeed?: string;
   codeLines?: string[];
   emphasis?: "normal" | "hero";
+  assetPath?: string;
 };
 
 const glow = (color: string) => `drop-shadow(0 0 32px ${color}99)`;
@@ -44,6 +46,7 @@ export const MicroblogVisual: React.FC<Props> = ({
   visualSeed = "mulaidaribasic",
   codeLines,
   emphasis = "normal",
+  assetPath,
 }) => {
   const visual = pickMicroblogVisual(
     variant,
@@ -51,7 +54,7 @@ export const MicroblogVisual: React.FC<Props> = ({
     visualSeed,
     explicitVisual
   );
-  if (visual === "none") return null;
+  if (visual === "none" && !assetPath) return null;
   const enter = useEnter(slideIndex * 2);
   const floatY = useFloat(slideIndex * 11, variant === "hook" ? 4 : 6);
   const isHero = emphasis === "hero";
@@ -76,21 +79,30 @@ export const MicroblogVisual: React.FC<Props> = ({
           width: "100%",
           height: "100%",
           maxWidth: isHero ? 980 : 920,
+          borderRadius: assetPath ? 18 : undefined,
+          overflow: assetPath ? "hidden" : undefined,
+          border: assetPath ? `1px solid ${BRAND.border}` : undefined,
         }}
       >
-        {visual === "layers" && <ProductLayers seed={visualSeed} />}
-        {visual === "code" && <CodeVisual lines={codeLines} seed={slideIndex} />}
-        {visual === "grid" && <FeatureGridVisual seed={slideIndex} />}
-        {visual === "wireframe" && <WireframeVisual seed={slideIndex} />}
-        {visual === "security" && <SecurityVisual />}
-        {visual === "chart" && <ChartVisual />}
-        {visual === "product" && <ProductFlowVisual seed={slideIndex} hero={isHero} />}
-        {visual === "nodes" && <NodesVisual seed={slideIndex} hero={isHero} />}
-        {visual === "monolith" && <MonolithVisual seed={slideIndex} />}
-        {visual === "pipeline" && <PipelineVisual seed={slideIndex} />}
-        {visual === "cloud" && <CloudVisual seed={slideIndex} />}
-        {visual === "api" && <ApiVisual seed={slideIndex} />}
-        {visual === "tracing" && <TracingVisual seed={slideIndex} />}
+        {assetPath ? (
+          <AiIllustration src={assetPath} />
+        ) : (
+          <>
+            {visual === "layers" && <ProductLayers seed={visualSeed} />}
+            {visual === "code" && <CodeVisual lines={codeLines} seed={slideIndex} />}
+            {visual === "grid" && <FeatureGridVisual seed={slideIndex} />}
+            {visual === "wireframe" && <WireframeVisual seed={slideIndex} />}
+            {visual === "security" && <SecurityVisual />}
+            {visual === "chart" && <ChartVisual />}
+            {visual === "product" && <ProductFlowVisual seed={slideIndex} hero={isHero} />}
+            {visual === "nodes" && <NodesVisual seed={slideIndex} hero={isHero} />}
+            {visual === "monolith" && <MonolithVisual seed={slideIndex} />}
+            {visual === "pipeline" && <PipelineVisual seed={slideIndex} />}
+            {visual === "cloud" && <CloudVisual seed={slideIndex} />}
+            {visual === "api" && <ApiVisual seed={slideIndex} />}
+            {visual === "tracing" && <TracingVisual seed={slideIndex} />}
+          </>
+        )}
       </div>
     </div>
   );

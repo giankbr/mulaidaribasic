@@ -20,3 +20,4 @@ node_modules/
 remotion/node_modules/
 remotion/.render-props.json
 remotion/.slide-*.json
+remotion/public/generated/

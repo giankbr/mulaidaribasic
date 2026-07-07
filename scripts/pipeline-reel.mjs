@@ -28,9 +28,11 @@ function run(cmd, cmdArgs) {
   if (result.status !== 0) process.exit(result.status ?? 1);
 }
 
-const uploadFlags = flags.filter((f) => ["--queue", "--schedule", "--draft", "--dry-run"].includes(f) || f.startsWith("--schedule"));
-const scheduleVal = args[args.indexOf("--schedule") + 1];
-if (scheduleVal && !uploadFlags.includes("--schedule")) uploadFlags.push("--schedule", scheduleVal);
+const uploadFlags = flags.filter((f) => ["--queue", "--draft", "--dry-run"].includes(f));
+const scheduleIdx = args.indexOf("--schedule");
+if (scheduleIdx >= 0) {
+  uploadFlags.push("--schedule", args[scheduleIdx + 1]);
+}
 
 let scriptPath;
 

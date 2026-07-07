@@ -27,6 +27,7 @@ export const BasicReel: React.FC<ReelProps> = ({
   points,
   cta,
   thumbnailText,
+  visualAssets,
 }) => {
   return (
     <AbsoluteFill
@@ -40,19 +41,39 @@ export const BasicReel: React.FC<ReelProps> = ({
       <BrandBackground />
 
       <Sequence from={SCENES.hook.from} durationInFrames={SCENES.hook.duration}>
-        <TextScene eyebrow="Web Basic" headline={hook} body={hookSubtitle} />
+        <TextScene
+          eyebrow="Web Basic"
+          headline={hook}
+          body={hookSubtitle}
+          imageSrc={visualAssets?.hook}
+        />
       </Sequence>
 
       <Sequence from={SCENES.p1.from} durationInFrames={SCENES.p1.duration}>
-        <TextScene step="01" headline={points[0].title} body={points[0].body} />
+        <TextScene
+          step="01"
+          headline={points[0].title}
+          body={points[0].body}
+          imageSrc={visualAssets?.p1}
+        />
       </Sequence>
 
       <Sequence from={SCENES.p2.from} durationInFrames={SCENES.p2.duration}>
-        <TextScene step="02" headline={points[1].title} body={points[1].body} />
+        <TextScene
+          step="02"
+          headline={points[1].title}
+          body={points[1].body}
+          imageSrc={visualAssets?.p2}
+        />
       </Sequence>
 
       <Sequence from={SCENES.p3.from} durationInFrames={SCENES.p3.duration}>
-        <TextScene step="03" headline={points[2].title} body={points[2].body} />
+        <TextScene
+          step="03"
+          headline={points[2].title}
+          body={points[2].body}
+          imageSrc={visualAssets?.p3}
+        />
       </Sequence>
 
       <Sequence from={SCENES.cta.from} durationInFrames={SCENES.cta.duration}>

@@ -12,6 +12,10 @@ import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
 import { parseMicroblog } from "./lib/microblog-parse.mjs";
 import { MICROBLOG_HEIGHT, MICROBLOG_WIDTH } from "./lib/dimensions.mjs";
+import {
+  ensureMicroblogVisuals,
+  syncExistingMicroblogVisuals,
+} from "./lib/visual-assets.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
@@ -38,8 +42,9 @@ function resolveInputPath(input) {
 }
 
 const input = process.argv[2];
+const flags = new Set(process.argv.slice(3).filter((a) => a.startsWith("--")));
 if (!input) {
-  console.error("Usage: node scripts/render-microblog.mjs microblog/<file>.md");
+  console.error("Usage: node scripts/render-microblog.mjs microblog/<file>.md [--skip-ai] [--force-ai]");
   process.exit(1);
 }
 
@@ -66,11 +71,21 @@ console.log(
 );
 console.log(`  Out:    ${outDir}/`);
 
+const skipAi = flags.has("--skip-ai");
+const forceAi = flags.has("--force-ai");
+const slideAssets = skipAi
+  ? syncExistingMicroblogVisuals(slug, slides.length)
+  : await ensureMicroblogVisuals(slug, slides, { force: forceAi });
+
 for (const slide of slides) {
   const num = String(slide.slideIndex).padStart(2, "0");
   const outFile = join(outDir, `${num}.png`);
   const propsPath = join(REMOTION, `.slide-${num}.json`);
-  const props = { ...slide, visualSeed: slug };
+  const props = {
+    ...slide,
+    visualSeed: slug,
+    ...(slideAssets[slide.slideIndex] ? { assetPath: slideAssets[slide.slideIndex] } : {}),
+  };
   writeFileSync(propsPath, JSON.stringify(props));
 
   const result = spawnSync(

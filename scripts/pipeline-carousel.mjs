@@ -28,8 +28,10 @@ function run(cmd, cmdArgs) {
 }
 
 const uploadFlags = flags.filter((f) => ["--queue", "--draft", "--dry-run"].includes(f));
-const scheduleVal = args[args.indexOf("--schedule") + 1];
-if (scheduleVal) uploadFlags.push("--schedule", scheduleVal);
+const scheduleIdx = args.indexOf("--schedule");
+if (scheduleIdx >= 0) {
+  uploadFlags.push("--schedule", args[scheduleIdx + 1]);
+}
 
 let mdPath;
 

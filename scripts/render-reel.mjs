@@ -3,6 +3,10 @@ import { join, dirname, basename } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
 import { parseReelScript } from "./lib/copy.mjs";
+import {
+  ensureReelVisuals,
+  syncExistingReelVisuals,
+} from "./lib/visual-assets.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
@@ -28,15 +32,17 @@ function resolveInputPath(scriptPath) {
 }
 
 const scriptArg = process.argv[2];
+const flags = new Set(process.argv.slice(3).filter((a) => a.startsWith("--")));
 if (!scriptArg) {
-  console.error("Usage: node scripts/render-reel.mjs <script.md> [output.mp4]");
+  console.error("Usage: node scripts/render-reel.mjs <script.md> [output.mp4] [--skip-ai] [--force-ai]");
   process.exit(1);
 }
 
 const absScript = resolveInputPath(scriptArg);
 const slug = basename(scriptArg, ".md");
-const output = process.argv[3]
-  ? join(ROOT, process.argv[3])
+const positional = process.argv.slice(3).filter((a) => !a.startsWith("--"));
+const output = positional[0]
+  ? join(ROOT, positional[0])
   : join(ROOT, "output", "reels", `${slug}.mp4`);
 
 const raw = readFileSync(absScript, "utf8");
@@ -50,6 +56,15 @@ const props = {
   cta: parsed.cta,
   thumbnailText: parsed.thumbnailText,
 };
+
+const skipAi = flags.has("--skip-ai");
+const forceAi = flags.has("--force-ai");
+const visualAssets = skipAi
+  ? syncExistingReelVisuals(slug)
+  : await ensureReelVisuals(slug, parsed, { force: forceAi });
+if (Object.keys(visualAssets).length > 0) {
+  props.visualAssets = visualAssets;
+}
 
 const propsPath = join(REMOTION, ".render-props.json");
 mkdirSync(dirname(output), { recursive: true });

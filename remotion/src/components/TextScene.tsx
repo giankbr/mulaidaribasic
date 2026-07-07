@@ -33,6 +33,7 @@ type TextSceneProps = {
   headline: string;
   body?: string;
   step?: string;
+  imageSrc?: string;
 };
 
 function bodySize(text: string) {
@@ -53,6 +54,7 @@ export const TextScene: React.FC<TextSceneProps> = ({
   headline,
   body,
   step,
+  imageSrc,
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -138,7 +140,10 @@ export const TextScene: React.FC<TextSceneProps> = ({
             </div>
           ) : null}
 
-          <ReelSceneDecoration visual={step ? pickReelVisual(headline, body) : "hook"} />
+          <ReelSceneDecoration
+            visual={step ? pickReelVisual(headline, body) : "hook"}
+            imageSrc={imageSrc}
+          />
         </div>
       </AbsoluteFill>
     </AbsoluteFill>

@@ -145,7 +145,7 @@ export const TopTagline: React.FC = () => (
       style={{
         fontFamily: bodyFont,
         fontSize: 11,
-        fontWeight: 700,
+        fontWeight: 600,
         letterSpacing: "0.16em",
         color: BRAND.primary,
         textTransform: "uppercase",

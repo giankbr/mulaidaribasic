@@ -4,7 +4,7 @@ import { loadFont as loadPlusJakarta } from "@remotion/google-fonts/PlusJakartaS
 import { HeroBlurBackground } from "./HeroBlurBackground";
 import { MicroblogVisual } from "./MicroblogVisual";
 import { MicroblogHookCover } from "./MicroblogHookCover";
-import { BRAND, BRAND_HANDLE, BRAND_WEBSITE } from "../lib/constants";
+import { BRAND, BRAND_HANDLE } from "../lib/constants";
 import type { MicroblogSlideProps } from "../lib/microblog";
 import { bodyEyebrow, hookEyebrow, pickCoverLayout, pickMicroblogVisual } from "../lib/microblog";
 import {
@@ -34,13 +34,14 @@ export const MicroblogSlide: React.FC<MicroblogSlideProps> = ({
   visualSeed,
   codeLines,
   coverLayout,
+  assetPath,
 }) => {
   const isHook = variant === "hook";
   const isCta = variant === "cta";
   const hasDetails = Boolean(details && details.length > 0);
   const seed = visualSeed ?? "mulaidaribasic";
   const resolvedVisual = pickMicroblogVisual(variant, slideIndex, seed, visual);
-  const showVisual = resolvedVisual !== "none";
+  const showVisual = resolvedVisual !== "none" || Boolean(assetPath);
   const showFooterCta = isCta && Boolean(ctaLabel) && showVisual;
   const headlineSize = isHook ? (hasDetails ? 68 : 76) : isCta ? 50 : 52;
   const hookLayout = pickCoverLayout(seed, coverLayout);
@@ -74,6 +75,7 @@ export const MicroblogSlide: React.FC<MicroblogSlideProps> = ({
               slideTotal={slideTotal}
               visual={resolvedVisual}
               visualSeed={seed}
+              assetPath={assetPath}
               hasDetails={hasDetails}
             />
           ) : (
@@ -122,6 +124,7 @@ export const MicroblogSlide: React.FC<MicroblogSlideProps> = ({
                     visual={resolvedVisual}
                     visualSeed={seed}
                     codeLines={codeLines}
+                    assetPath={assetPath}
                   />
                 </div>
               ) : null}
@@ -147,14 +150,21 @@ export const MicroblogSlide: React.FC<MicroblogSlideProps> = ({
           <div
             style={{
               display: "flex",
-              justifyContent: "space-between",
+              justifyContent: "flex-end",
               alignItems: "center",
             }}
           >
-            <span style={{ fontSize: 12, color: BRAND.muted, letterSpacing: "0.02em" }}>
-              {BRAND_WEBSITE}
+            <span
+              style={{
+                fontFamily: bodyFont,
+                fontSize: 20,
+                fontWeight: 600,
+                color: BRAND.muted,
+                letterSpacing: "0.01em",
+              }}
+            >
+              {BRAND_HANDLE}
             </span>
-            <span style={{ fontSize: 12, color: BRAND.muted }}>{BRAND_HANDLE}</span>
           </div>
         </div>
       </AbsoluteFill>
