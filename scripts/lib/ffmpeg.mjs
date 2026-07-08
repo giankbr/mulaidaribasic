@@ -36,3 +36,22 @@ export function runFfmpeg(args) {
     throw new Error(result.stderr || "ffmpeg failed");
   }
 }
+
+/** ffmpeg atempo only accepts 0.5–2.0 per filter; chain when speeding up more */
+export function buildAtempoFilter(tempo) {
+  if (tempo <= 1.01) return null;
+
+  const filters = [];
+  let remaining = tempo;
+
+  while (remaining > 2.0) {
+    filters.push("atempo=2.0");
+    remaining /= 2.0;
+  }
+
+  if (remaining > 1.01) {
+    filters.push(`atempo=${remaining.toFixed(4)}`);
+  }
+
+  return filters.length > 0 ? filters.join(",") : null;
+}

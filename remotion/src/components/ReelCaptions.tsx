@@ -63,13 +63,14 @@ export const ReelCaptions: React.FC<ReelCaptionsProps> = ({ captions }) => {
             letterSpacing: "-0.01em",
           }}
         >
-          {page.tokens.map((token) => {
+          {page.tokens.map((token, index) => {
             const active =
               currentTimeMs >= token.fromMs && currentTimeMs < token.toMs;
+            const label = token.text.trim();
 
             return (
               <span
-                key={`${token.fromMs}-${token.text}`}
+                key={`${token.fromMs}-${index}`}
                 style={{
                   color: active ? "#FFE566" : "#FFFFFF",
                   opacity: active ? 1 : 0.88,
@@ -78,7 +79,8 @@ export const ReelCaptions: React.FC<ReelCaptionsProps> = ({ captions }) => {
                     : undefined,
                 }}
               >
-                {token.text}
+                {index > 0 ? " " : ""}
+                {label}
               </span>
             );
           })}

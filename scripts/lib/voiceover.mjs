@@ -1,15 +1,21 @@
 import { mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import { basename, dirname, join } from "node:path";
 import { MsEdgeTTS, OUTPUT_FORMAT } from "msedge-tts";
-import { ffprobeDurationSec, runFfmpeg } from "./ffmpeg.mjs";
+import { ffprobeDurationSec, runFfmpeg, buildAtempoFilter } from "./ffmpeg.mjs";
 
 const REEL_FPS = 30;
 const REEL_DURATION_SEC = 52;
-const VOICE = "id-ID-ArdiNeural";
-/** Natural pace for educational narration — avoid rushed delivery */
-const TTS_RATE = "-18%";
-/** Never speed up voice more than this when text runs long */
-const MAX_SPEEDUP = 1.06;
+/**
+ * Indonesian neural voices (Edge TTS):
+ * - id-ID-GadisNeural — female, warmer / more conversational
+ * - id-ID-ArdiNeural — male
+ * Override with TTS_VOICE in .env
+ */
+const VOICE = process.env.TTS_VOICE ?? "id-ID-ArdiNeural";
+/** Slightly brisk so full narration fits each scene slot */
+const TTS_RATE = process.env.TTS_RATE ?? "+10%";
+/** Prefer speeding up over clipping so all words are spoken */
+const MAX_SPEEDUP = Number(process.env.TTS_MAX_SPEEDUP ?? "1.35");
 
 /** Mirrors remotion/src/lib/constants.ts SCENES */
 const SCENES = [
@@ -131,8 +137,9 @@ function fitAudioToDuration(inputPath, outputPath, targetSec) {
   const tempo = Math.min(neededTempo, MAX_SPEEDUP);
 
   const args = ["-i", inputPath, "-c:a", "libmp3lame", "-q:a", "4"];
-  if (tempo > 1.01) {
-    args.splice(2, 0, "-filter:a", `atempo=${tempo.toFixed(4)}`);
+  const atempo = buildAtempoFilter(tempo);
+  if (atempo) {
+    args.splice(2, 0, "-filter:a", atempo);
   }
   if (neededTempo > MAX_SPEEDUP) {
     args.push("-t", String(targetSec));
