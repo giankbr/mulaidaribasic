@@ -1,8 +1,9 @@
 import React from "react";
-import { interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
-import { BRAND } from "../lib/constants";
+import { Easing, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
+import { BRAND, SCENES } from "../lib/constants";
 import { pickReelVisual, type ReelVisual } from "../lib/reel-visual";
 import { AiIllustration } from "./AiIllustration";
+import { SPRING_SNAPPY, SPRING_SMOOTH, useSceneTransition } from "../lib/reel-motion";
 
 export { pickReelVisual, type ReelVisual };
 
@@ -886,22 +887,25 @@ const SecureAnim: React.FC = () => {
   );
 };
 
-export const ReelCtaCard: React.FC<{ cta: string }> = ({ cta }) => {
+export const ReelCtaCard: React.FC<{ cta: string; durationInFrames: number }> = ({
+  cta,
+  durationInFrames,
+}) => {
   const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const enter = spring({ frame, fps, config: { damping: 22, stiffness: 120 } });
-  const opacity = interpolate(enter, [0, 1], [0, 1]);
-  const y = interpolate(enter, [0, 1], [36, 0]);
+  const { opacity, y, scale } = useSceneTransition(durationInFrames);
   const pulse = interpolate(frame % 80, [0, 40, 80], [0.15, 0.4, 0.15]);
   const iconKind = ctaIconKind(cta);
 
   // Drop the "Follow @handle" clause (the pill already shows it) so the
-  // headline stays contextual instead of a bare thumbnail label.
+  // headline stays contextual instead of a bare thumbnail label. Also trim a
+  // dangling conjunction left behind by the split (e.g. "... nanti dan").
   const headline =
     cta
       .split(/\bfollow\b/i)[0]
       .trim()
-      .replace(/[.!,\s]+$/, "") || cta;
+      .replace(/[.!,\s]+$/, "")
+      .replace(/[\s,]+(dan|lalu|serta|untuk|buat|dan juga)$/i, "")
+      .trim() || cta;
 
   return (
     <div
@@ -919,7 +923,7 @@ export const ReelCtaCard: React.FC<{ cta: string }> = ({ cta }) => {
         background: `linear-gradient(165deg, ${BRAND.surface} 0%, ${BRAND.primaryLight} 100%)`,
         boxShadow: "0 24px 60px rgba(68,83,198,0.22), 0 1px 0 rgba(255,255,255,0.9) inset",
         opacity,
-        transform: `translateY(${y}px)`,
+        transform: `translateY(${y}px) scale(${scale})`,
       }}
     >
       <div style={{ position: "relative", display: "grid", placeItems: "center", width: 220, height: 220 }}>
@@ -977,24 +981,160 @@ export const ReelCtaCard: React.FC<{ cta: string }> = ({ cta }) => {
         Belajar IT fundamental, mulai dari basic.
       </div>
 
+      <FollowButtonAnim />
+    </div>
+  );
+};
+
+/** Looping follow button: cursor taps → dip + ripple → "Mengikuti" → reverts.
+ *  Always settles back on "Follow @mulaidaribasic" before the scene ends. */
+const FollowButtonAnim: React.FC = () => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+
+  const CYCLE = 78;
+  const TAP = 36;
+  const settleStart = SCENES.cta.duration - 16;
+  const settled = frame >= settleStart;
+  const t = frame % CYCLE;
+
+  const pressSpring = spring({
+    frame: settled ? 0 : Math.max(0, t - (TAP - 10)),
+    fps,
+    config: SPRING_SNAPPY,
+    durationInFrames: 18,
+  });
+  const press = settled ? 1 : interpolate(pressSpring, [0, 0.5, 1], [1, 0.92, 1]);
+
+  const followBlend = settled
+    ? 0
+    : interpolate(t, [TAP, TAP + 14, TAP + 44, TAP + 58], [0, 1, 1, 0], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+        easing: Easing.inOut(Easing.cubic),
+      });
+
+  const rippleSpring = spring({
+    frame: settled ? 0 : Math.max(0, t - TAP),
+    fps,
+    config: { damping: 40, stiffness: 50, mass: 1 },
+    durationInFrames: 28,
+  });
+  const rippleScale = 0.5 + rippleSpring * 1.4;
+  const rippleOpacity = settled ? 0 : interpolate(rippleSpring, [0, 1], [0.5, 0]);
+
+  const cursorIn = spring({
+    frame: settled ? 0 : t,
+    fps,
+    config: SPRING_SMOOTH,
+    durationInFrames: 22,
+  });
+  const cx = interpolate(cursorIn, [0, 1], [88, 0], { easing: Easing.out(Easing.cubic) });
+  const cy = interpolate(cursorIn, [0, 1], [72, 0], { easing: Easing.out(Easing.cubic) });
+  const cursorDip = settled
+    ? 0
+    : interpolate(t, [TAP - 5, TAP, TAP + 10], [0, 10, 0], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+        easing: Easing.inOut(Easing.quad),
+      });
+  const cursorOpacity = settled
+    ? 0
+    : interpolate(t, [0, 8, 48, 62], [0, 1, 1, 0], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+      });
+
+  const bgFollow = `linear-gradient(135deg, ${BRAND.primary}, ${BRAND.primaryDeep})`;
+  const bgFollowing = "#FFFFFF";
+
+  return (
+    <div style={{ position: "relative", marginTop: 6, display: "flex", justifyContent: "center" }}>
       <div
         style={{
-          marginTop: 6,
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          width: 200,
+          height: 60,
+          borderRadius: 999,
+          border: `2px solid ${BRAND.primary}`,
+          transform: `translate(-50%, -50%) scale(${rippleScale})`,
+          opacity: rippleOpacity,
+          pointerEvents: "none",
+        }}
+      />
+
+      <div
+        style={{
+          position: "relative",
           display: "inline-flex",
           alignItems: "center",
           gap: 10,
           padding: "16px 30px",
           borderRadius: 999,
-          background: `linear-gradient(135deg, ${BRAND.primary}, ${BRAND.primaryDeep})`,
-          color: "#fff",
+          background: followBlend > 0.5 ? bgFollowing : bgFollow,
+          border: `2px solid ${followBlend > 0.5 ? BRAND.primary : "transparent"}`,
+          color: followBlend > 0.5 ? BRAND.primary : "#fff",
           fontFamily: "var(--font-heading)",
           fontSize: 28,
           fontWeight: 700,
-          boxShadow: `0 10px 24px ${BRAND.primary}44`,
+          boxShadow: followBlend > 0.5 ? "none" : `0 10px 24px ${BRAND.primary}44`,
+          transform: `scale(${press})`,
+          transition: "none",
         }}
       >
-        <CtaIcon kind="follow" size={26} />
-        Follow @mulaidaribasic
+        <div style={{ width: 26, height: 26, position: "relative" }}>
+          <div style={{ position: "absolute", inset: 0, opacity: 1 - followBlend }}>
+            <CtaIcon kind="follow" size={26} />
+          </div>
+          <div style={{ position: "absolute", inset: 0, opacity: followBlend }}>
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M20 6L9 17l-5-5"
+                stroke={BRAND.primary}
+                strokeWidth="2.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
+        </div>
+        <span style={{ position: "relative", minWidth: 220, textAlign: "center" }}>
+          <span style={{ opacity: 1 - followBlend }}>Follow @mulaidaribasic</span>
+          <span
+            style={{
+              position: "absolute",
+              left: 0,
+              right: 0,
+              opacity: followBlend,
+            }}
+          >
+            Mengikuti
+          </span>
+        </span>
+      </div>
+
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: `translate(${cx}px, ${cy + cursorDip}px)`,
+          opacity: cursorOpacity,
+          pointerEvents: "none",
+          filter: "drop-shadow(0 4px 8px rgba(15,23,42,0.35))",
+        }}
+      >
+        <svg width="38" height="38" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M5 2.5l14.5 8.2-6.3 1.1 3.1 6.4-2.3 1.1-3.1-6.4L5 18.5z"
+            fill="#0F172A"
+            stroke="#fff"
+            strokeWidth="1.4"
+            strokeLinejoin="round"
+          />
+        </svg>
       </div>
     </div>
   );

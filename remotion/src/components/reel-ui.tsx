@@ -1,5 +1,5 @@
 import React from "react";
-import { interpolate, useCurrentFrame } from "remotion";
+import { Easing, interpolate, useCurrentFrame } from "remotion";
 import { BRAND, BRAND_HANDLE, SCENES } from "../lib/constants";
 
 export const REEL_PAD_X = 52;
@@ -40,7 +40,11 @@ export const ReelProgress: React.FC = () => {
           frame,
           [s.from, s.from + s.duration],
           [0, 1],
-          { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+          {
+            extrapolateLeft: "clamp",
+            extrapolateRight: "clamp",
+            easing: Easing.inOut(Easing.cubic),
+          }
         );
         return (
           <div

@@ -10,6 +10,7 @@ import {
 } from "./components/reel-ui";
 import { ReelCtaCard } from "./components/ReelSceneDecoration";
 import { SCENES, type ReelProps } from "./lib/constants";
+import { SCENE_TRANSITION_FRAMES } from "./lib/reel-motion";
 
 const { fontFamily: headingFont } = loadPlusJakarta("normal", {
   weights: ["700", "800"],
@@ -19,6 +20,16 @@ const { fontFamily: bodyFont } = loadPlusJakarta("normal", {
   weights: ["500", "600", "700"],
   subsets: ["latin"],
 });
+
+const X = SCENE_TRANSITION_FRAMES;
+
+function sceneDuration(base: number, isFirst = false) {
+  return isFirst ? base : base + X;
+}
+
+function sceneFrom(base: number, isFirst = false) {
+  return isFirst ? base : base - X;
+}
 
 export const BasicReel: React.FC<ReelProps> = ({
   hook,
@@ -38,43 +49,47 @@ export const BasicReel: React.FC<ReelProps> = ({
     >
       <BrandBackground />
 
-      <Sequence from={SCENES.hook.from} durationInFrames={SCENES.hook.duration}>
+      <Sequence from={sceneFrom(SCENES.hook.from, true)} durationInFrames={sceneDuration(SCENES.hook.duration, true)}>
         <TextScene
           eyebrow="Web Basic"
           headline={hook}
           body={hookSubtitle}
           imageSrc={visualAssets?.hook}
+          durationInFrames={SCENES.hook.duration}
         />
       </Sequence>
 
-      <Sequence from={SCENES.p1.from} durationInFrames={SCENES.p1.duration}>
+      <Sequence from={sceneFrom(SCENES.p1.from)} durationInFrames={sceneDuration(SCENES.p1.duration)}>
         <TextScene
           step="01"
           headline={points[0].title}
           body={points[0].body}
           imageSrc={visualAssets?.p1}
+          durationInFrames={sceneDuration(SCENES.p1.duration)}
         />
       </Sequence>
 
-      <Sequence from={SCENES.p2.from} durationInFrames={SCENES.p2.duration}>
+      <Sequence from={sceneFrom(SCENES.p2.from)} durationInFrames={sceneDuration(SCENES.p2.duration)}>
         <TextScene
           step="02"
           headline={points[1].title}
           body={points[1].body}
           imageSrc={visualAssets?.p2}
+          durationInFrames={sceneDuration(SCENES.p2.duration)}
         />
       </Sequence>
 
-      <Sequence from={SCENES.p3.from} durationInFrames={SCENES.p3.duration}>
+      <Sequence from={sceneFrom(SCENES.p3.from)} durationInFrames={sceneDuration(SCENES.p3.duration)}>
         <TextScene
           step="03"
           headline={points[2].title}
           body={points[2].body}
           imageSrc={visualAssets?.p3}
+          durationInFrames={sceneDuration(SCENES.p3.duration)}
         />
       </Sequence>
 
-      <Sequence from={SCENES.cta.from} durationInFrames={SCENES.cta.duration}>
+      <Sequence from={sceneFrom(SCENES.cta.from)} durationInFrames={sceneDuration(SCENES.cta.duration)}>
         <AbsoluteFill>
           <ReelTopTagline />
           <AbsoluteFill
@@ -83,7 +98,7 @@ export const BasicReel: React.FC<ReelProps> = ({
               padding: `${REEL_SCENE_SHELL.padTop + 24}px ${REEL_SCENE_SHELL.padX}px ${REEL_SCENE_SHELL.padBottom}px`,
             }}
           >
-            <ReelCtaCard cta={cta} />
+            <ReelCtaCard cta={cta} durationInFrames={sceneDuration(SCENES.cta.duration)} />
           </AbsoluteFill>
         </AbsoluteFill>
       </Sequence>

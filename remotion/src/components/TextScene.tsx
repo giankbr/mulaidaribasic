@@ -1,15 +1,10 @@
 import React from "react";
-import {
-  AbsoluteFill,
-  interpolate,
-  spring,
-  useCurrentFrame,
-  useVideoConfig,
-} from "remotion";
+import { AbsoluteFill } from "remotion";
 import { BRAND } from "../lib/constants";
 import { ReelHookEyebrow, ReelPointBadge, ReelTopTagline, REEL_SCENE_SHELL } from "./reel-ui";
 import { ReelSceneDecoration } from "./ReelSceneDecoration";
 import { pickReelVisual } from "../lib/reel-visual";
+import { useSceneTransition } from "../lib/reel-motion";
 
 const { padX: REEL_PAD_X, padTop: REEL_PAD_TOP, padBottom: REEL_PAD_BOTTOM } = REEL_SCENE_SHELL;
 const REEL_CARD_MIN_HEIGHT = 960;
@@ -34,6 +29,8 @@ type TextSceneProps = {
   body?: string;
   step?: string;
   imageSrc?: string;
+  durationInFrames: number;
+  enterDelay?: number;
 };
 
 function bodySize(text: string) {
@@ -55,13 +52,10 @@ export const TextScene: React.FC<TextSceneProps> = ({
   body,
   step,
   imageSrc,
+  durationInFrames,
+  enterDelay = 0,
 }) => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-
-  const enter = spring({ frame, fps, config: { damping: 22, stiffness: 120 } });
-  const opacity = interpolate(enter, [0, 1], [0, 1]);
-  const y = interpolate(enter, [0, 1], [36, 0]);
+  const { opacity, y, scale } = useSceneTransition(durationInFrames, enterDelay);
 
   const isHook = !step;
   const titleSize = headlineSize(headline, isHook);
@@ -97,7 +91,7 @@ export const TextScene: React.FC<TextSceneProps> = ({
           justifyContent: "center",
           padding: `${REEL_PAD_TOP + 24}px ${REEL_PAD_X}px ${REEL_PAD_BOTTOM}px`,
           opacity,
-          transform: `translateY(${y}px)`,
+          transform: `translateY(${y}px) scale(${scale})`,
         }}
       >
         <div
