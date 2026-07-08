@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill, Sequence } from "remotion";
+import { AbsoluteFill, Audio, Sequence, staticFile } from "remotion";
 import { loadFont as loadPlusJakarta } from "@remotion/google-fonts/PlusJakartaSans";
 import { BrandBackground } from "./components/BrandBackground";
 import { TextScene } from "./components/TextScene";
@@ -8,6 +8,7 @@ import {
   ReelProgress,
   ReelTopTagline,
 } from "./components/reel-ui";
+import { ReelCaptions } from "./components/ReelCaptions";
 import { ReelCtaCard } from "./components/ReelSceneDecoration";
 import { SCENES, type ReelProps } from "./lib/constants";
 import { SCENE_TRANSITION_FRAMES } from "./lib/reel-motion";
@@ -37,6 +38,8 @@ export const BasicReel: React.FC<ReelProps> = ({
   points,
   cta,
   visualAssets,
+  voiceoverSrc,
+  captions,
 }) => {
   return (
     <AbsoluteFill
@@ -102,6 +105,14 @@ export const BasicReel: React.FC<ReelProps> = ({
           </AbsoluteFill>
         </AbsoluteFill>
       </Sequence>
+
+      {voiceoverSrc ? <Audio src={staticFile(voiceoverSrc)} volume={1} /> : null}
+
+      {captions && captions.length > 0 ? (
+        <AbsoluteFill style={{ zIndex: 5, pointerEvents: "none" }}>
+          <ReelCaptions captions={captions} />
+        </AbsoluteFill>
+      ) : null}
 
       <AbsoluteFill style={{ zIndex: 4, pointerEvents: "none" }}>
         <ReelProgress />

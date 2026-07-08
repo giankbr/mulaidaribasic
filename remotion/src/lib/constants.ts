@@ -10,6 +10,14 @@ export type ReelVisualAssets = {
   p3?: string;
 };
 
+export type ReelCaption = {
+  text: string;
+  startMs: number;
+  endMs: number;
+  timestampMs: number | null;
+  confidence: number | null;
+};
+
 export type ReelProps = {
   title: string;
   hook: string;
@@ -18,6 +26,8 @@ export type ReelProps = {
   cta: string;
   thumbnailText: string;
   visualAssets?: ReelVisualAssets;
+  voiceoverSrc?: string;
+  captions?: ReelCaption[];
 };
 
 export const REEL_FPS = 30;

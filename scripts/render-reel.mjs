@@ -7,6 +7,7 @@ import {
   ensureReelVisuals,
   syncExistingReelVisuals,
 } from "./lib/visual-assets.mjs";
+import { generateVoiceover } from "./lib/voiceover.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
@@ -34,7 +35,9 @@ function resolveInputPath(scriptPath) {
 const scriptArg = process.argv[2];
 const flags = new Set(process.argv.slice(3).filter((a) => a.startsWith("--")));
 if (!scriptArg) {
-  console.error("Usage: node scripts/render-reel.mjs <script.md> [output.mp4] [--ai] [--force-ai]");
+  console.error(
+    "Usage: node scripts/render-reel.mjs <script.md> [output.mp4] [--ai] [--force-ai] [--no-voice]"
+  );
   process.exit(1);
 }
 
@@ -59,11 +62,28 @@ const props = {
 
 const useAi = flags.has("--ai") || flags.has("--force-ai");
 const forceAi = flags.has("--force-ai");
+const withVoice = !flags.has("--no-voice");
 const visualAssets = useAi
   ? await ensureReelVisuals(slug, parsed, { force: forceAi })
   : syncExistingReelVisuals(slug);
 if (Object.keys(visualAssets).length > 0) {
   props.visualAssets = visualAssets;
+}
+
+if (withVoice) {
+  console.log("→ Generating voiceover + karaoke captions…");
+  try {
+    const voice = await generateVoiceover(slug, parsed, {
+      workDir: join(ROOT, "output", "voiceovers", slug),
+      publicDir: join(REMOTION, "public", "voiceovers"),
+    });
+    props.voiceoverSrc = voice.voiceoverSrc;
+    props.captions = voice.captions;
+    console.log(`  Voice: ${voice.audioPath}`);
+    console.log(`  Captions: ${voice.captions.length} tokens`);
+  } catch (err) {
+    console.warn(`  Voiceover skipped: ${err.message}`);
+  }
 }
 
 const propsPath = join(REMOTION, ".render-props.json");

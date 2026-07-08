@@ -14,5 +14,8 @@
     "pipeline:carousel": "node scripts/pipeline-carousel.mjs",
     "research:topics": "node scripts/research-topics.mjs",
     "studio": "cd remotion && npm run studio"
+  },
+  "dependencies": {
+    "msedge-tts": "^2.0.6"
   }
 }

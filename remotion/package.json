@@ -9,8 +9,10 @@
     "render:example": "remotion render src/index.ts BasicReel ../output/reels/example.mp4"
   },
   "dependencies": {
+    "@remotion/captions": "^4.0.485",
     "@remotion/cli": "^4.0.485",
     "@remotion/google-fonts": "^4.0.485",
+    "@remotion/media-utils": "^4.0.485",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "remotion": "^4.0.485"
