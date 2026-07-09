@@ -7,7 +7,7 @@ Wajib dibaca sebelum generate script / microblog.
 - Satu slide/scene = satu konsep basic
 - Kalimat pendek, jelas, humble
 - Bahasa Indonesia natural; istilah tech boleh (HTTP, Git, API) tanpa diapit asterisk
-- Boleh pakai `gue/kamu` kalau natural
+- Boleh pakai gaya **Jaksel lo/gue** yang santai, tapi tetap jelas dan nggak alay
 - Jangan pakai: "dampaknya", "solusinya adalah", "di Novagen kami", "digital engineering partner"
 - **Punctuation:** kalimat normal pakai koma/titik. **Jangan** em dash (`—`), double dash (`--`, `---`)
 
@@ -46,10 +46,10 @@ Wajib dibaca sebelum generate script / microblog.
 | Belajar IT / mindset | `product`, `grid` |
 | Slide CTA / penutup | `none` |
 
-### CTA slide 6 — rotate (pilih 1)
-- `Save buat belajar nanti →`
-- `Follow @mulaidaribasic`
-- `Share ke temen yang baru mulai`
+### CTA slide 6 — rotate (pilih 1, boleh dibumbui dikit gaya lo/gue)
+- `Save dulu buat lo belajar nanti →`
+- `Follow @mulaidaribasic biar nggak ketinggalan`
+- `Share ke temen lo yang baru mulai`
 - `Link di bio → virgian.tech`
 
 ## Contoh BAGUS vs JELEK

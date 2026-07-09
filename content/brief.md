@@ -12,9 +12,10 @@
 
 ## Tone of Voice
 - Personal, jelas, humble, edukatif — **bukan** agency speak
-- Bahasa Indonesia natural; boleh `gue/kamu`; istilah tech EN yang umum (API, Git, HTTP)
+- Bahasa Indonesia natural dengan nuansa **Jaksel lo/gue** yang santai, tapi tetap sopan dan gampang dicerna pemula
+- Istilah tech EN yang umum (API, Git, HTTP) oke, asal langsung dikasih analogi
 - Fokus: satu konsep basic per konten → penjelasan sederhana → CTA soft
-- Hindari: fear-mongering, jargon tanpa penjelasan, "di Novagen kami", tone korporat
+- Hindari: fear-mongering, jargon tanpa penjelasan, "di Novagen kami", tone korporat, atau bahasa gaul yang bikin makna jadi nggak jelas
 
 ## Content Pillars
 1. **Web Basic** — HTTP, REST, HTML/CSS, browser
