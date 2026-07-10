@@ -95,10 +95,13 @@ export const MicroblogSlide: React.FC<MicroblogSlideProps> = ({
           <div
             style={{
               ...microblogCardStyle,
-              padding: isHook ? "40px 32px 44px" : "36px 30px 44px",
+              minHeight: 0,
+              width: "100%",
+              padding: isHook ? "32px 32px 36px" : "32px 30px 36px",
               display: "flex",
               flexDirection: "column",
               overflow: "hidden",
+              alignItems: "stretch",
             }}
           >
             {isHook ? (
@@ -116,38 +119,57 @@ export const MicroblogSlide: React.FC<MicroblogSlideProps> = ({
                 hasDetails={hasDetails}
               />
             ) : (
-              <>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  flex: 1,
+                  minHeight: 0,
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
                 <div
                   style={{
                     display: "flex",
                     justifyContent: "flex-end",
                     alignItems: "center",
                     marginBottom: 28,
+                    flexShrink: 0,
                   }}
                 >
                   <SlideCounter slideIndex={slideIndex} slideTotal={slideTotal} />
                 </div>
 
                 {!isCta ? (
-                  <div style={{ fontSize: 14, color: BRAND.muted, marginBottom: 16, fontWeight: 600 }}>
+                  <div
+                    style={{
+                      fontSize: 14,
+                      color: BRAND.muted,
+                      marginBottom: 16,
+                      fontWeight: 600,
+                      flexShrink: 0,
+                    }}
+                  >
                     {bodyEyebrow(pillar, slideIndex)}
                   </div>
                 ) : null}
 
-                <Headline headline={headline} size={headlineSize} cover={false} />
-
-                {subtitle ? <Subtitle text={subtitle} compact={hasDetails} /> : null}
-                {hasDetails ? <DetailList items={details!} compact={hasDetails} /> : null}
+                <div style={{ flexShrink: 0 }}>
+                  <Headline headline={headline} size={headlineSize} cover={false} />
+                  {subtitle ? <Subtitle text={subtitle} compact={hasDetails} /> : null}
+                  {hasDetails ? <DetailList items={details!} compact={hasDetails} /> : null}
+                </div>
 
                 {isCta && ctaLabel && !showVisual ? (
-                  <div style={{ marginTop: 32 }}>
+                  <div style={{ marginTop: 32, flexShrink: 0 }}>
                     <CtaPill label={ctaLabel} />
                   </div>
                 ) : null}
 
                 {showVisual ? (
-                  <div style={{ flex: "0 0 auto", marginTop: 14, zIndex: 1 }}>
-                    <VisualFrame height={hasDetails ? 280 : 300}>
+                  <div style={{ flexShrink: 0, marginTop: 16, zIndex: 1, width: "100%" }}>
+                    <VisualFrame height={hasDetails ? 400 : 420}>
                       <MicroblogVisual
                         slideIndex={slideIndex}
                         variant={variant}
@@ -161,11 +183,11 @@ export const MicroblogSlide: React.FC<MicroblogSlideProps> = ({
                 ) : null}
 
                 {isCta && ctaLabel && showVisual ? (
-                  <div style={{ marginTop: 24 }}>
+                  <div style={{ marginTop: 24, flexShrink: 0 }}>
                     <CtaPill label={ctaLabel} />
                   </div>
                 ) : null}
-              </>
+              </div>
             )}
           </div>
         </div>

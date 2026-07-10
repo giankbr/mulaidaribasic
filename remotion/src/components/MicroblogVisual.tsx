@@ -58,7 +58,7 @@ export const MicroblogVisual: React.FC<Props> = ({
   const enter = useEnter(slideIndex * 2);
   const floatY = useFloat(slideIndex * 11, variant === "hook" ? 4 : 6);
   const isHero = emphasis === "hero";
-  const baseScale = isHero ? 1.02 : 0.96;
+  const baseScale = 1;
 
   return (
     <div
@@ -70,7 +70,7 @@ export const MicroblogVisual: React.FC<Props> = ({
         justifyContent: "center",
         pointerEvents: "none",
         opacity: enter,
-        transform: `translateY(${floatY}px) scale(${baseScale + enter * 0.06})`,
+        transform: `translateY(${floatY * 0.35}px) scale(${baseScale})`,
       }}
     >
       <div
@@ -629,7 +629,7 @@ const ApiVisual: React.FC<{ seed: number }> = ({ seed }) => {
 
   return (
     <svg
-      viewBox="0 0 520 220"
+      viewBox="0 0 520 300"
       width="100%"
       height="100%"
       preserveAspectRatio="xMidYMid meet"
@@ -646,62 +646,62 @@ const ApiVisual: React.FC<{ seed: number }> = ({ seed }) => {
       </defs>
 
       {/* Client */}
-      <rect x="24" y="72" width="108" height="64" rx="14" fill="#FFFFFF" stroke={BRAND.primarySoft} strokeWidth="2" />
-      <text x="78" y="100" textAnchor="middle" fontSize="15" fontWeight="700" fill={BRAND.text} fontFamily="system-ui">
+      <rect x="20" y="78" width="120" height="84" rx="16" fill="#FFFFFF" stroke={BRAND.primarySoft} strokeWidth="2.5" />
+      <text x="80" y="114" textAnchor="middle" fontSize="18" fontWeight="700" fill={BRAND.text} fontFamily="system-ui">
         Client
       </text>
-      <text x="78" y="120" textAnchor="middle" fontSize="11" fill={BRAND.muted} fontFamily="system-ui">
+      <text x="80" y="138" textAnchor="middle" fontSize="13" fill={BRAND.muted} fontFamily="system-ui">
         Frontend
       </text>
 
       {/* API hub */}
-      <rect x="206" y="52" width="108" height="104" rx="16" fill="url(#api-hub)" stroke={BRAND.primary} strokeWidth="2.5" />
-      <text x="260" y="102" textAnchor="middle" fontSize="18" fontWeight="800" fill={BRAND.primary} fontFamily="system-ui">
+      <rect x="196" y="52" width="128" height="136" rx="18" fill="url(#api-hub)" stroke={BRAND.primary} strokeWidth="3" />
+      <text x="260" y="118" textAnchor="middle" fontSize="24" fontWeight="800" fill={BRAND.primary} fontFamily="system-ui">
         API
       </text>
-      <text x="260" y="124" textAnchor="middle" fontSize="11" fill={BRAND.muted} fontFamily="system-ui">
+      <text x="260" y="146" textAnchor="middle" fontSize="13" fill={BRAND.muted} fontFamily="system-ui">
         REST endpoint
       </text>
 
       {/* Server */}
-      <rect x="388" y="72" width="108" height="64" rx="14" fill="#FFFFFF" stroke={BRAND.primarySoft} strokeWidth="2" />
-      <text x="442" y="100" textAnchor="middle" fontSize="15" fontWeight="700" fill={BRAND.text} fontFamily="system-ui">
+      <rect x="380" y="78" width="120" height="84" rx="16" fill="#FFFFFF" stroke={BRAND.primarySoft} strokeWidth="2.5" />
+      <text x="440" y="114" textAnchor="middle" fontSize="18" fontWeight="700" fill={BRAND.text} fontFamily="system-ui">
         Server
       </text>
-      <text x="442" y="120" textAnchor="middle" fontSize="11" fill={BRAND.muted} fontFamily="system-ui">
+      <text x="440" y="138" textAnchor="middle" fontSize="13" fill={BRAND.muted} fontFamily="system-ui">
         Backend
       </text>
 
       {/* Arrows */}
-      <line x1="132" y1="100" x2="198" y2="100" stroke={BRAND.primary} strokeWidth="2.5" markerEnd="url(#api-arrow)" />
-      <line x1="322" y1="100" x2="382" y2="100" stroke={BRAND.primary} strokeWidth="2.5" markerEnd="url(#api-arrow)" />
-      <text x="165" y="88" textAnchor="middle" fontSize="10" fill={BRAND.muted} fontFamily="system-ui">
+      <line x1="140" y1="120" x2="190" y2="120" stroke={BRAND.primary} strokeWidth="3" markerEnd="url(#api-arrow)" />
+      <line x1="330" y1="120" x2="374" y2="120" stroke={BRAND.primary} strokeWidth="3" markerEnd="url(#api-arrow)" />
+      <text x="165" y="104" textAnchor="middle" fontSize="12" fill={BRAND.muted} fontFamily="system-ui">
         request
       </text>
-      <text x="352" y="88" textAnchor="middle" fontSize="10" fill={BRAND.muted} fontFamily="system-ui">
+      <text x="352" y="104" textAnchor="middle" fontSize="12" fill={BRAND.muted} fontFamily="system-ui">
         response
       </text>
 
       {/* Route examples */}
       {routes.map((route, i) => {
-        const x = 52 + i * 148;
+        const x = 40 + i * 156;
         const isActive = i === active;
         return (
           <g key={route.path}>
             <rect
               x={x}
-              y="172"
-              width="132"
-              height="34"
-              rx="10"
+              y="232"
+              width="140"
+              height="42"
+              rx="12"
               fill={isActive ? BRAND.primaryLight : "#FFFFFF"}
               stroke={isActive ? BRAND.primary : BRAND.border}
-              strokeWidth={isActive ? 2 : 1.5}
+              strokeWidth={isActive ? 2.5 : 1.5}
             />
             <text
-              x={x + 14}
-              y="194"
-              fontSize="13"
+              x={x + 16}
+              y="259"
+              fontSize="15"
               fontWeight="700"
               fill={BRAND.primary}
               fontFamily="ui-monospace, Menlo, monospace"
@@ -709,9 +709,9 @@ const ApiVisual: React.FC<{ seed: number }> = ({ seed }) => {
               {route.method}
             </text>
             <text
-              x={x + 58}
-              y="194"
-              fontSize="13"
+              x={x + 64}
+              y="259"
+              fontSize="15"
               fontWeight="600"
               fill={BRAND.muted}
               fontFamily="ui-monospace, Menlo, monospace"

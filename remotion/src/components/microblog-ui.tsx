@@ -385,21 +385,22 @@ export const HookEyebrow: React.FC<{ label: string }> = ({ label }) => (
   </div>
 );
 
-export const VisualFrame: React.FC<{ children: React.ReactNode; height?: number }> = ({
-  children,
-  height = 320,
-}) => (
+export const VisualFrame: React.FC<{
+  children: React.ReactNode;
+  height?: number;
+  fill?: boolean;
+}> = ({ children, height = 320, fill }) => (
   <div
     style={{
       width: "100%",
-      height,
+      height: fill ? "100%" : height,
       position: "relative",
       borderRadius: 28,
       border: `1px solid ${BRAND.primarySoft}`,
       background: `linear-gradient(165deg, ${BRAND.surface} 0%, ${BRAND.primaryLight} 100%)`,
       boxShadow: "0 12px 32px rgba(59,130,246,0.12), 0 1px 0 rgba(255,255,255,0.9) inset",
       overflow: "hidden",
-      padding: "12px 16px",
+      padding: "16px 18px",
     }}
   >
     {children}

@@ -81,7 +81,7 @@ const VisualSlot: React.FC<{
 
   if (framed) {
     return (
-      <VisualFrame height={height}>
+      <VisualFrame height={fill ? undefined : height} fill={fill}>
         <div style={{ position: "relative", height: "100%", width: "100%" }}>{scaled}</div>
       </VisualFrame>
     );
@@ -179,11 +179,12 @@ const CenterCover: React.FC<HookCoverProps> = (props) => {
         flex: 1,
         minHeight: 0,
         width: "100%",
+        height: "100%",
       }}
     >
       <HeaderRow slideIndex={slideIndex} slideTotal={slideTotal} compact />
-      <div style={{ textAlign: "left", width: "100%", flexShrink: 0, marginTop: 16 }}>
-        <div style={{ marginBottom: 16 }}>
+      <div style={{ textAlign: "left", width: "100%", flexShrink: 0, marginTop: 12 }}>
+        <div style={{ marginBottom: 14 }}>
           <span
             style={{
               display: "inline-flex",
@@ -201,27 +202,23 @@ const CenterCover: React.FC<HookCoverProps> = (props) => {
             {eyebrow}
           </span>
         </div>
-        <Headline headline={headline} size={72} cover maxWidth={1020} />
+        <Headline headline={headline} size={68} cover maxWidth={1020} />
         {subtitle ? <Subtitle text={subtitle} size="sm" dense /> : null}
         {hasDetails ? <DetailList items={details!} compact /> : null}
       </div>
-      <div
-        style={{
-          width: "100%",
-          marginTop: 16,
-          flex: "0 0 auto",
-          minHeight: 0,
-        }}
-      >
-        <VisualSlot
-          height={220}
-          slideIndex={slideIndex}
-          visual={visual}
-          visualSeed={visualSeed}
-          assetPath={props.assetPath}
-          emphasis="hero"
-          framed
-        />
+      <div style={{ width: "100%", marginTop: 16, flexShrink: 0 }}>
+        <VisualFrame height={450}>
+          <div style={{ position: "relative", height: "100%", width: "100%" }}>
+            <MicroblogVisual
+              slideIndex={slideIndex}
+              variant="hook"
+              visual={visual}
+              visualSeed={visualSeed}
+              emphasis="hero"
+              assetPath={props.assetPath}
+            />
+          </div>
+        </VisualFrame>
       </div>
     </div>
   );
