@@ -10,6 +10,8 @@ export type MicroblogVisualType =
   | "pipeline"
   | "cloud"
   | "api"
+  | "bridge"
+  | "waiter"
   | "tracing"
   | "product"
   | "none";
@@ -48,6 +50,8 @@ const BODY_VISUALS: MicroblogVisualType[] = [
   "pipeline",
   "cloud",
   "api",
+  "bridge",
+  "waiter",
   "tracing",
   "layers",
 ];

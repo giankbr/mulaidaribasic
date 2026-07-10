@@ -12,6 +12,8 @@ const VISUAL_TYPES = new Set([
   "pipeline",
   "cloud",
   "api",
+  "bridge",
+  "waiter",
   "tracing",
   "product",
   "none",

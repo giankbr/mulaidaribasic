@@ -99,6 +99,8 @@ export const MicroblogVisual: React.FC<Props> = ({
             {visual === "pipeline" && <PipelineVisual seed={slideIndex} />}
             {visual === "cloud" && <CloudVisual seed={slideIndex} />}
             {visual === "api" && <ApiVisual seed={slideIndex} />}
+            {visual === "bridge" && <BridgeVisual seed={slideIndex} />}
+            {visual === "waiter" && <WaiterVisual seed={slideIndex} />}
             {visual === "tracing" && <TracingVisual seed={slideIndex} />}
           </>
         )}
@@ -503,7 +505,7 @@ const NodesVisual: React.FC<{ seed: number; hero?: boolean }> = ({ seed, hero })
             x={n.x + boxW / 2}
             y={n.y + boxH / 2 + 7}
             textAnchor="middle"
-            fill="#fff"
+            fill={BRAND.text}
             fontSize={fontSize}
             fontWeight="600"
             fontFamily="system-ui"
@@ -723,3 +725,213 @@ const ApiVisual: React.FC<{ seed: number }> = ({ seed }) => {
   );
 };
 
+/** Multi-app bridge through a shared API hub */
+const BridgeVisual: React.FC<{ seed: number }> = ({ seed }) => {
+  const apps = [
+    { id: "frontend", label: "Frontend", sub: "React", x: 28, y: 28 },
+    { id: "mobile", label: "Mobile", sub: "Flutter", x: 28, y: 148 },
+    { id: "backend", label: "Backend", sub: "Node.js", x: 384, y: 88 },
+  ];
+  const active = seed % apps.length;
+
+  return (
+    <svg
+      viewBox="0 0 520 240"
+      width="100%"
+      height="100%"
+      preserveAspectRatio="xMidYMid meet"
+      style={{ display: "block" }}
+    >
+      <defs>
+        <marker id="bridge-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill={BRAND.primary} />
+        </marker>
+        <linearGradient id="bridge-hub" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor={BRAND.primaryLight} />
+          <stop offset="100%" stopColor="#FFFFFF" />
+        </linearGradient>
+      </defs>
+
+      <rect x="196" y="72" width="128" height="112" rx="18" fill="url(#bridge-hub)" stroke={BRAND.primary} strokeWidth="2.5" />
+      <text x="260" y="122" textAnchor="middle" fontSize="20" fontWeight="800" fill={BRAND.primary} fontFamily="system-ui">
+        API
+      </text>
+      <text x="260" y="146" textAnchor="middle" fontSize="11" fill={BRAND.muted} fontFamily="system-ui">
+        jembatan data
+      </text>
+
+      {apps.map((app) => {
+        const isActive = app.id === apps[active].id;
+        const boxW = 112;
+        const boxH = 64;
+        const cx = app.x + boxW / 2;
+        const cy = app.y + boxH / 2;
+        const hubLeft = 196;
+        const hubRight = 324;
+        const hubMidY = 128;
+        const toHub = app.id !== "backend";
+
+        return (
+          <g key={app.id}>
+            <line
+              x1={toHub ? cx + boxW / 2 : hubRight}
+              y1={toHub ? cy : hubMidY}
+              x2={toHub ? hubLeft : app.x}
+              y2={toHub ? cy : cy}
+              stroke={isActive ? BRAND.primary : BRAND.primarySoft}
+              strokeWidth={isActive ? 2.5 : 2}
+              strokeDasharray={isActive ? undefined : "6 4"}
+              markerEnd="url(#bridge-arrow)"
+            />
+            <rect
+              x={app.x}
+              y={app.y}
+              width={boxW}
+              height={boxH}
+              rx="14"
+              fill={isActive ? BRAND.primaryLight : "#FFFFFF"}
+              stroke={isActive ? BRAND.primary : BRAND.primarySoft}
+              strokeWidth={isActive ? 2.5 : 2}
+            />
+            <text x={cx} y={app.y + 28} textAnchor="middle" fontSize="15" fontWeight="700" fill={BRAND.text} fontFamily="system-ui">
+              {app.label}
+            </text>
+            <text x={cx} y={app.y + 48} textAnchor="middle" fontSize="11" fill={BRAND.muted} fontFamily="system-ui">
+              {app.sub}
+            </text>
+          </g>
+        );
+      })}
+
+      <text x="260" y="228" textAnchor="middle" fontSize="11" fill={BRAND.muted} fontFamily="system-ui">
+        beda teknologi, tetap bisa ngobrol lewat API
+      </text>
+    </svg>
+  );
+};
+
+/** Restaurant waiter analogy — Client → API (pelayan) → Server (dapur) */
+const WaiterVisual: React.FC<{ seed: number }> = ({ seed }) => {
+  const steps = ["pesen", "sampaikan", "bawa balasan"];
+  const active = seed % steps.length;
+
+  const nodes = [
+    { id: "client", label: "Client", sub: "lo yang pesen", x: 28, y: 78 },
+    { id: "api", label: "API", sub: "pelayan", x: 196, y: 62, hub: true },
+    { id: "server", label: "Server", sub: "dapur", x: 384, y: 78 },
+  ];
+
+  return (
+    <svg
+      viewBox="0 0 520 240"
+      width="100%"
+      height="100%"
+      preserveAspectRatio="xMidYMid meet"
+      style={{ display: "block" }}
+    >
+      <defs>
+        <marker id="waiter-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill={BRAND.primary} />
+        </marker>
+        <linearGradient id="waiter-hub" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor={BRAND.primaryLight} />
+          <stop offset="100%" stopColor="#FFFFFF" />
+        </linearGradient>
+      </defs>
+
+      {/* blocked direct path */}
+      <path
+        d="M 84 108 Q 260 20 436 108"
+        fill="none"
+        stroke={BRAND.border}
+        strokeWidth="2"
+        strokeDasharray="8 6"
+      />
+      <text x="260" y="36" textAnchor="middle" fontSize="10" fill={BRAND.muted} fontFamily="system-ui">
+        nggak langsung ke dapur ✕
+      </text>
+
+      {/* forward flow */}
+      <line
+        x1="140"
+        y1="108"
+        x2="190"
+        y2="108"
+        stroke={active === 0 ? BRAND.primary : BRAND.primarySoft}
+        strokeWidth={active === 0 ? 2.5 : 2}
+        markerEnd="url(#waiter-arrow)"
+      />
+      <text x="165" y="96" textAnchor="middle" fontSize="10" fill={BRAND.muted} fontFamily="system-ui">
+        pesen
+      </text>
+
+      <line
+        x1="324"
+        y1="108"
+        x2="384"
+        y2="108"
+        stroke={active === 1 ? BRAND.primary : BRAND.primarySoft}
+        strokeWidth={active === 1 ? 2.5 : 2}
+        markerEnd="url(#waiter-arrow)"
+      />
+      <text x="351" y="96" textAnchor="middle" fontSize="10" fill={BRAND.muted} fontFamily="system-ui">
+        sampaikan
+      </text>
+
+      {/* return flow */}
+      <path
+        d="M 378 132 Q 260 188 140 132"
+        fill="none"
+        stroke={active === 2 ? BRAND.primary : BRAND.primarySoft}
+        strokeWidth={active === 2 ? 2.5 : 2}
+        strokeDasharray={active === 2 ? undefined : "6 4"}
+        markerEnd="url(#waiter-arrow)"
+      />
+      <text x="260" y="206" textAnchor="middle" fontSize="10" fill={BRAND.muted} fontFamily="system-ui">
+        bawa balasan
+      </text>
+
+      {nodes.map((node) => {
+        const boxW = node.hub ? 128 : 112;
+        const boxH = node.hub ? 96 : 72;
+        const cx = node.x + boxW / 2;
+
+        return (
+          <g key={node.id}>
+            <rect
+              x={node.x}
+              y={node.y}
+              width={boxW}
+              height={boxH}
+              rx={node.hub ? 18 : 14}
+              fill={node.hub ? "url(#waiter-hub)" : "#FFFFFF"}
+              stroke={node.hub ? BRAND.primary : BRAND.primarySoft}
+              strokeWidth={node.hub ? 2.5 : 2}
+            />
+            <text
+              x={cx}
+              y={node.y + (node.hub ? 42 : 32)}
+              textAnchor="middle"
+              fontSize={node.hub ? 20 : 15}
+              fontWeight="800"
+              fill={node.hub ? BRAND.primary : BRAND.text}
+              fontFamily="system-ui"
+            >
+              {node.label}
+            </text>
+            <text
+              x={cx}
+              y={node.y + (node.hub ? 66 : 54)}
+              textAnchor="middle"
+              fontSize="11"
+              fill={BRAND.muted}
+              fontFamily="system-ui"
+            >
+              {node.sub}
+            </text>
+          </g>
+        );
+      })}
+    </svg>
+  );
+};

@@ -11,10 +11,12 @@ import {
   CtaPill,
   DetailList,
   Headline,
+  MicroblogGhostWatermark,
   MicroblogProgress,
   MicroblogTopTagline,
   SlideCounter,
   Subtitle,
+  VisualFrame,
 } from "./microblog-ui";
 import { reelCardStyle } from "./TextScene";
 
@@ -69,12 +71,13 @@ export const MicroblogSlide: React.FC<MicroblogSlideProps> = ({
       }
     >
       <BrandBackground />
+      <MicroblogGhostWatermark />
 
       <AbsoluteFill
         style={{
           display: "flex",
           flexDirection: "column",
-          padding: "56px 48px 80px",
+          padding: "36px 48px 80px",
           zIndex: 2,
         }}
       >
@@ -85,7 +88,7 @@ export const MicroblogSlide: React.FC<MicroblogSlideProps> = ({
             flex: 1,
             display: "flex",
             alignItems: "center",
-            marginTop: 16,
+            marginTop: 18,
             minHeight: 0,
           }}
         >
@@ -143,23 +146,17 @@ export const MicroblogSlide: React.FC<MicroblogSlideProps> = ({
                 ) : null}
 
                 {showVisual ? (
-                  <div
-                    style={{
-                      flex: "0 0 auto",
-                      height: hasDetails ? 360 : 320,
-                      position: "relative",
-                      marginTop: 14,
-                      zIndex: 1,
-                    }}
-                  >
-                    <MicroblogVisual
-                      slideIndex={slideIndex}
-                      variant={variant}
-                      visual={resolvedVisual}
-                      visualSeed={seed}
-                      codeLines={codeLines}
-                      assetPath={assetPath}
-                    />
+                  <div style={{ flex: "0 0 auto", marginTop: 14, zIndex: 1 }}>
+                    <VisualFrame height={hasDetails ? 280 : 300}>
+                      <MicroblogVisual
+                        slideIndex={slideIndex}
+                        variant={variant}
+                        visual={resolvedVisual}
+                        visualSeed={seed}
+                        codeLines={codeLines}
+                        assetPath={assetPath}
+                      />
+                    </VisualFrame>
                   </div>
                 ) : null}
 

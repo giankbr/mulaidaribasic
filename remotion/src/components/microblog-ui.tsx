@@ -156,22 +156,93 @@ export const TopTagline: React.FC = () => (
   </div>
 );
 
-/** Light tagline for wallpaper backgrounds (matches reel overlay). */
+/** Small centered brand pill — nexavest-style header mark. */
 export const MicroblogTopTagline: React.FC = () => (
-  <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-    <span
+  <div
+    style={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      flexShrink: 0,
+      paddingTop: 2,
+    }}
+  >
+    <div
       style={{
-        fontFamily: bodyFont,
-        fontSize: 11,
-        fontWeight: 600,
-        letterSpacing: "0.16em",
-        color: "rgba(255,255,255,0.88)",
-        textTransform: "uppercase",
+        display: "flex",
+        alignItems: "center",
+        padding: "8px 18px",
+        borderRadius: 999,
+        background: "rgba(15,23,42,0.28)",
+        border: "1px solid rgba(255,255,255,0.22)",
+        backdropFilter: "blur(8px)",
       }}
     >
-      Mulai Dari Basic
-    </span>
+      <span
+        style={{
+          fontFamily: headingFont,
+          fontSize: 18,
+          fontWeight: 700,
+          letterSpacing: "-0.02em",
+          color: "rgba(255,255,255,0.95)",
+        }}
+      >
+        mulaidaribasic
+      </span>
+    </div>
   </div>
+);
+
+/** Huge ghost brand wordmark — nexavest-style edge watermark. */
+export const MicroblogGhostWatermark: React.FC = () => (
+  <>
+    <div
+      aria-hidden
+      style={{
+        position: "absolute",
+        top: -36,
+        left: 0,
+        right: 0,
+        textAlign: "center",
+        fontFamily: headingFont,
+        fontSize: 148,
+        fontWeight: 800,
+        lineHeight: 0.82,
+        letterSpacing: "-0.05em",
+        color: "rgba(255,255,255,0.10)",
+        pointerEvents: "none",
+        userSelect: "none",
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        zIndex: 1,
+      }}
+    >
+      mulaidaribasic
+    </div>
+    <div
+      aria-hidden
+      style={{
+        position: "absolute",
+        bottom: -28,
+        left: 0,
+        right: 0,
+        textAlign: "center",
+        fontFamily: headingFont,
+        fontSize: 148,
+        fontWeight: 800,
+        lineHeight: 0.82,
+        letterSpacing: "-0.05em",
+        color: "rgba(255,255,255,0.08)",
+        pointerEvents: "none",
+        userSelect: "none",
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        zIndex: 1,
+      }}
+    >
+      mulaidaribasic
+    </div>
+  </>
 );
 
 /** Story-style progress for carousel slides (static per slide). */
