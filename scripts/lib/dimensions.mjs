@@ -1,6 +1,7 @@
-/** TikTok feed native 9:16 */
+/** Reels / TikTok video — 9:16 */
 export const FEED_WIDTH = 1080;
 export const FEED_HEIGHT = 1920;
 
-export const MICROBLOG_WIDTH = FEED_WIDTH;
-export const MICROBLOG_HEIGHT = FEED_HEIGHT;
+/** IG microblog carousel — 4:5 */
+export const MICROBLOG_WIDTH = 1080;
+export const MICROBLOG_HEIGHT = 1350;

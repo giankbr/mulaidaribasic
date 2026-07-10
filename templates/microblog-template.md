@@ -1,7 +1,7 @@
 # IG Microblog: [TITLE]
 
 **Date:** YYYY-MM-DD  
-**Format:** Carousel 9:16 (TikTok photo)  
+**Format:** Carousel 4:5 (IG photo)  
 **Pillar:** [Web Basic | Backend Basic | Git & Tools | ...]  
 **Slides:** 6  
 

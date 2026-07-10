@@ -33,9 +33,10 @@ export type MicroblogSlideProps = {
 };
 
 export const MICROBLOG_WIDTH = 1080;
-export const MICROBLOG_HEIGHT = 1920; // 9:16 TikTok feed / photo carousel
+export const MICROBLOG_HEIGHT = 1350; // 4:5 IG carousel
 
-export const MICROBLOG_RENDER_SCALE = 2;
+/** IG native; render at 1x (1080×1350) by default */
+export const MICROBLOG_RENDER_SCALE = 1;
 
 const HOOK_VISUALS: MicroblogVisualType[] = ["code", "layers", "api", "cloud", "pipeline"];
 const BODY_VISUALS: MicroblogVisualType[] = [

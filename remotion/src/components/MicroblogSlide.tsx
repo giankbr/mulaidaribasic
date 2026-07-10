@@ -1,25 +1,37 @@
 import React from "react";
 import { AbsoluteFill } from "remotion";
 import { loadFont as loadPlusJakarta } from "@remotion/google-fonts/PlusJakartaSans";
-import { HeroBlurBackground } from "./HeroBlurBackground";
+import { BrandBackground } from "./BrandBackground";
 import { MicroblogVisual } from "./MicroblogVisual";
 import { MicroblogHookCover } from "./MicroblogHookCover";
-import { BRAND, BRAND_HANDLE } from "../lib/constants";
+import { BRAND } from "../lib/constants";
 import type { MicroblogSlideProps } from "../lib/microblog";
 import { bodyEyebrow, hookEyebrow, pickCoverLayout, pickMicroblogVisual } from "../lib/microblog";
 import {
   CtaPill,
   DetailList,
   Headline,
+  MicroblogProgress,
+  MicroblogTopTagline,
   SlideCounter,
   Subtitle,
-  TopTagline,
 } from "./microblog-ui";
+import { reelCardStyle } from "./TextScene";
 
+const { fontFamily: headingFont } = loadPlusJakarta("normal", {
+  weights: ["700", "800"],
+  subsets: ["latin"],
+});
 const { fontFamily: bodyFont } = loadPlusJakarta("normal", {
   weights: ["400", "500", "600", "700"],
   subsets: ["latin"],
 });
+
+const microblogCardStyle: React.CSSProperties = {
+  ...reelCardStyle,
+  minHeight: 0,
+  width: "100%",
+};
 
 export const MicroblogSlide: React.FC<MicroblogSlideProps> = ({
   variant,
@@ -42,132 +54,127 @@ export const MicroblogSlide: React.FC<MicroblogSlideProps> = ({
   const seed = visualSeed ?? "mulaidaribasic";
   const resolvedVisual = pickMicroblogVisual(variant, slideIndex, seed, visual);
   const showVisual = resolvedVisual !== "none" || Boolean(assetPath);
-  const showFooterCta = isCta && Boolean(ctaLabel) && showVisual;
-  const headlineSize = isHook ? (hasDetails ? 68 : 76) : isCta ? 50 : 52;
+  const headlineSize = isHook ? (hasDetails ? 58 : 64) : isCta ? 44 : 46;
   const hookLayout = pickCoverLayout(seed, coverLayout);
 
   return (
-    <AbsoluteFill style={{ fontFamily: bodyFont, backgroundColor: BRAND.bg, WebkitFontSmoothing: "antialiased" }}>
-      <HeroBlurBackground />
+    <AbsoluteFill
+      style={
+        {
+          "--font-heading": headingFont,
+          "--font-body": bodyFont,
+          fontFamily: bodyFont,
+          WebkitFontSmoothing: "antialiased",
+        } as React.CSSProperties
+      }
+    >
+      <BrandBackground />
 
       <AbsoluteFill
         style={{
-          position: "relative",
           display: "flex",
           flexDirection: "column",
-          padding: "48px 52px",
-          paddingBottom: showFooterCta ? 128 : 96,
-          overflow: "hidden",
+          padding: "56px 48px 80px",
           zIndex: 2,
         }}
       >
-        <div style={{ position: "relative", zIndex: 2, flex: 1, display: "flex", flexDirection: "column" }}>
-          <TopTagline />
-
-          {isHook ? (
-            <MicroblogHookCover
-              layout={hookLayout}
-              eyebrow={hookEyebrow(pillar)}
-              headline={headline}
-              subtitle={subtitle}
-              details={details}
-              slideIndex={slideIndex}
-              slideTotal={slideTotal}
-              visual={resolvedVisual}
-              visualSeed={seed}
-              assetPath={assetPath}
-              hasDetails={hasDetails}
-            />
-          ) : (
-            <>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "center",
-                  marginBottom: 28,
-                }}
-              >
-                <SlideCounter slideIndex={slideIndex} slideTotal={slideTotal} />
-              </div>
-
-              {!isCta ? (
-                <div style={{ fontSize: 14, color: BRAND.muted, marginBottom: 16, fontWeight: 600 }}>
-                  {bodyEyebrow(pillar, slideIndex)}
-                </div>
-              ) : null}
-
-              <Headline headline={headline} size={headlineSize} cover={false} />
-
-              {subtitle ? <Subtitle text={subtitle} compact={hasDetails} /> : null}
-              {hasDetails ? <DetailList items={details!} compact={hasDetails} /> : null}
-
-              {isCta && ctaLabel && !showVisual ? (
-                <div style={{ marginTop: 32 }}>
-                  <CtaPill label={ctaLabel} />
-                </div>
-              ) : null}
-
-              {showVisual ? (
-                <div
-                  style={{
-                    flex: "0 0 auto",
-                    height: hasDetails ? 520 : 480,
-                    position: "relative",
-                    marginTop: 14,
-                    zIndex: 1,
-                  }}
-                >
-                  <MicroblogVisual
-                    slideIndex={slideIndex}
-                    variant={variant}
-                    visual={resolvedVisual}
-                    visualSeed={seed}
-                    codeLines={codeLines}
-                    assetPath={assetPath}
-                  />
-                </div>
-              ) : null}
-            </>
-          )}
-        </div>
+        <MicroblogTopTagline />
 
         <div
           style={{
-            position: "absolute",
-            bottom: 48,
-            left: 52,
-            right: 52,
-            zIndex: 4,
+            flex: 1,
+            display: "flex",
+            alignItems: "center",
+            marginTop: 16,
+            minHeight: 0,
           }}
         >
-          {isCta && ctaLabel && showVisual ? (
-            <div style={{ marginBottom: 10 }}>
-              <CtaPill label={ctaLabel} />
-            </div>
-          ) : null}
-
           <div
             style={{
+              ...microblogCardStyle,
+              padding: isHook ? "40px 32px 44px" : "36px 30px 44px",
               display: "flex",
-              justifyContent: "flex-end",
-              alignItems: "center",
+              flexDirection: "column",
+              overflow: "hidden",
             }}
           >
-            <span
-              style={{
-                fontFamily: bodyFont,
-                fontSize: 20,
-                fontWeight: 600,
-                color: BRAND.muted,
-                letterSpacing: "0.01em",
-              }}
-            >
-              {BRAND_HANDLE}
-            </span>
+            {isHook ? (
+              <MicroblogHookCover
+                layout={hookLayout}
+                eyebrow={hookEyebrow(pillar)}
+                headline={headline}
+                subtitle={subtitle}
+                details={details}
+                slideIndex={slideIndex}
+                slideTotal={slideTotal}
+                visual={resolvedVisual}
+                visualSeed={seed}
+                assetPath={assetPath}
+                hasDetails={hasDetails}
+              />
+            ) : (
+              <>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    alignItems: "center",
+                    marginBottom: 28,
+                  }}
+                >
+                  <SlideCounter slideIndex={slideIndex} slideTotal={slideTotal} />
+                </div>
+
+                {!isCta ? (
+                  <div style={{ fontSize: 14, color: BRAND.muted, marginBottom: 16, fontWeight: 600 }}>
+                    {bodyEyebrow(pillar, slideIndex)}
+                  </div>
+                ) : null}
+
+                <Headline headline={headline} size={headlineSize} cover={false} />
+
+                {subtitle ? <Subtitle text={subtitle} compact={hasDetails} /> : null}
+                {hasDetails ? <DetailList items={details!} compact={hasDetails} /> : null}
+
+                {isCta && ctaLabel && !showVisual ? (
+                  <div style={{ marginTop: 32 }}>
+                    <CtaPill label={ctaLabel} />
+                  </div>
+                ) : null}
+
+                {showVisual ? (
+                  <div
+                    style={{
+                      flex: "0 0 auto",
+                      height: hasDetails ? 360 : 320,
+                      position: "relative",
+                      marginTop: 14,
+                      zIndex: 1,
+                    }}
+                  >
+                    <MicroblogVisual
+                      slideIndex={slideIndex}
+                      variant={variant}
+                      visual={resolvedVisual}
+                      visualSeed={seed}
+                      codeLines={codeLines}
+                      assetPath={assetPath}
+                    />
+                  </div>
+                ) : null}
+
+                {isCta && ctaLabel && showVisual ? (
+                  <div style={{ marginTop: 24 }}>
+                    <CtaPill label={ctaLabel} />
+                  </div>
+                ) : null}
+              </>
+            )}
           </div>
         </div>
       </AbsoluteFill>
+
+      <MicroblogProgress slideIndex={slideIndex} slideTotal={slideTotal} />
     </AbsoluteFill>
   );
 };

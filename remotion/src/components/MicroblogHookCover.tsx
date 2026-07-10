@@ -82,7 +82,7 @@ const VisualSlot: React.FC<{
   if (framed) {
     return (
       <VisualFrame height={height}>
-        <div style={{ position: "relative", height: "100%" }}>{scaled}</div>
+        <div style={{ position: "relative", height: "100%", width: "100%" }}>{scaled}</div>
       </VisualFrame>
     );
   }
@@ -90,7 +90,6 @@ const VisualSlot: React.FC<{
   return (
     <div
       style={{
-        position: "relative",
         width: "100%",
         height: fill ? "100%" : height,
         flex: fill ? "1 1 0" : "0 0 auto",
@@ -117,7 +116,7 @@ const ClassicCover: React.FC<HookCoverProps> = (props) => {
       {hasDetails ? <DetailList items={details!} compact={hasDetails} /> : null}
       <div style={{ marginTop: 20 }}>
         <VisualSlot
-          height={hasDetails ? 440 : 400}
+          height={hasDetails ? 300 : 280}
           slideIndex={slideIndex}
           visual={visual}
           visualSeed={visualSeed}
@@ -153,10 +152,10 @@ const HeroCover: React.FC<HookCoverProps> = (props) => {
         </p>
       ) : null}
       <Headline headline={headline} size={70} cover maxWidth={820} />
-      {hasDetails ? <DetailList items={details!.slice(0, 1)} compact /> : null}
-      <div style={{ flex: 1, marginTop: 16, minHeight: 520, position: "relative" }}>
+      {hasDetails ? <DetailList items={details!} compact /> : null}
+      <div style={{ flex: 1, marginTop: 12, minHeight: 340, position: "relative" }}>
         <VisualSlot
-          height={520}
+          height={340}
           slideIndex={slideIndex}
           visual={visual}
           visualSeed={visualSeed}
@@ -183,7 +182,7 @@ const CenterCover: React.FC<HookCoverProps> = (props) => {
       }}
     >
       <HeaderRow slideIndex={slideIndex} slideTotal={slideTotal} compact />
-      <div style={{ textAlign: "left", width: "100%", flexShrink: 0, marginTop: 56 }}>
+      <div style={{ textAlign: "left", width: "100%", flexShrink: 0, marginTop: 16 }}>
         <div style={{ marginBottom: 16 }}>
           <span
             style={{
@@ -202,30 +201,26 @@ const CenterCover: React.FC<HookCoverProps> = (props) => {
             {eyebrow}
           </span>
         </div>
-        <Headline headline={headline} size={96} cover maxWidth={1020} />
+        <Headline headline={headline} size={72} cover maxWidth={1020} />
         {subtitle ? <Subtitle text={subtitle} size="sm" dense /> : null}
-        {hasDetails ? <DetailList items={details!.slice(0, 1)} compact /> : null}
+        {hasDetails ? <DetailList items={details!} compact /> : null}
       </div>
       <div
         style={{
           width: "100%",
-          marginTop: 24,
-          flex: 1,
-          minHeight: 480,
-          display: "flex",
-          alignItems: "flex-start",
-          justifyContent: "flex-start",
-          paddingTop: 0,
-          opacity: 0.9,
+          marginTop: 16,
+          flex: "0 0 auto",
+          minHeight: 0,
         }}
       >
         <VisualSlot
-          height={560}
+          height={220}
           slideIndex={slideIndex}
           visual={visual}
           visualSeed={visualSeed}
           assetPath={props.assetPath}
           emphasis="hero"
+          framed
         />
       </div>
     </div>

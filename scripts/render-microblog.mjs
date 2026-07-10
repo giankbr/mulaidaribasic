@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Render TikTok photo carousel slides (PNG, 9:16) for @mulaidaribasic.
+ * Render IG microblog carousel slides (PNG, 4:5) for @mulaidaribasic.
  *
  * Usage:
  *   node scripts/render-microblog.mjs microblog/2026-07-07-topic.md
@@ -24,7 +24,7 @@ const REMOTION = join(ROOT, "remotion");
 
 const COMPOSITION_WIDTH = MICROBLOG_WIDTH;
 const COMPOSITION_HEIGHT = MICROBLOG_HEIGHT;
-const RENDER_SCALE = Math.max(1, Number(process.env.MICROBLOG_SCALE) || 2);
+const RENDER_SCALE = Math.max(1, Number(process.env.MICROBLOG_SCALE) || 1);
 const RENDER_FRAME = Math.max(0, Number(process.env.MICROBLOG_FRAME) || 24);
 
 function resolveInputPath(input) {

@@ -156,6 +156,68 @@ export const TopTagline: React.FC = () => (
   </div>
 );
 
+/** Light tagline for wallpaper backgrounds (matches reel overlay). */
+export const MicroblogTopTagline: React.FC = () => (
+  <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+    <span
+      style={{
+        fontFamily: bodyFont,
+        fontSize: 11,
+        fontWeight: 600,
+        letterSpacing: "0.16em",
+        color: "rgba(255,255,255,0.88)",
+        textTransform: "uppercase",
+      }}
+    >
+      Mulai Dari Basic
+    </span>
+  </div>
+);
+
+/** Story-style progress for carousel slides (static per slide). */
+export const MicroblogProgress: React.FC<{
+  slideIndex: number;
+  slideTotal: number;
+}> = ({ slideIndex, slideTotal }) => (
+  <div
+    style={{
+      position: "absolute",
+      bottom: 72,
+      left: 48,
+      right: 48,
+      display: "flex",
+      gap: 8,
+      zIndex: 3,
+      pointerEvents: "none",
+    }}
+  >
+    {Array.from({ length: slideTotal }, (_, i) => {
+      const filled = i < slideIndex;
+      return (
+        <div
+          key={i}
+          style={{
+            flex: 1,
+            height: 5,
+            borderRadius: 999,
+            background: "rgba(255,255,255,0.28)",
+            overflow: "hidden",
+          }}
+        >
+          <div
+            style={{
+              width: filled ? "100%" : "0%",
+              height: "100%",
+              borderRadius: 999,
+              background: "#FFFFFF",
+            }}
+          />
+        </div>
+      );
+    })}
+  </div>
+);
+
 export const CtaPill: React.FC<{ label: string }> = ({ label }) => {
   const l = label.toLowerCase();
   const icon = l.includes("save") || l.includes("simpan") ? "🔖" : l.includes("follow") ? "+" : "↗";
@@ -258,12 +320,13 @@ export const VisualFrame: React.FC<{ children: React.ReactNode; height?: number 
 }) => (
   <div
     style={{
+      width: "100%",
       height,
       position: "relative",
       borderRadius: 28,
-      border: `1px solid ${BRAND.border}`,
-      background: BRAND.surface,
-      boxShadow: "0 8px 24px rgba(37,99,235,0.06)",
+      border: `1px solid ${BRAND.primarySoft}`,
+      background: `linear-gradient(165deg, ${BRAND.surface} 0%, ${BRAND.primaryLight} 100%)`,
+      boxShadow: "0 12px 32px rgba(59,130,246,0.12), 0 1px 0 rgba(255,255,255,0.9) inset",
       overflow: "hidden",
       padding: "12px 16px",
     }}

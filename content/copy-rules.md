@@ -20,7 +20,7 @@ Wajib dibaca sebelum generate script / microblog.
 | Isi poin | 24–40 kata (2–3 kalimat penjelasan) |
 | CTA | 12–18 kata |
 
-## IG Microblog (per slide) — TikTok photo carousel 9:16
+## IG Microblog (per slide) — carousel 4:5 (1080×1350)
 | Field | Target |
 |-------|--------|
 | Headline | 4–8 kata per baris, `**accent**` biru |

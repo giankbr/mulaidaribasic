@@ -63,8 +63,8 @@ export const MicroblogVisual: React.FC<Props> = ({
   return (
     <div
       style={{
-        position: "absolute",
-        inset: 0,
+        width: "100%",
+        height: "100%",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -78,7 +78,6 @@ export const MicroblogVisual: React.FC<Props> = ({
           position: "relative",
           width: "100%",
           height: "100%",
-          maxWidth: isHero ? 980 : 920,
           borderRadius: assetPath ? 18 : undefined,
           overflow: assetPath ? "hidden" : undefined,
           border: assetPath ? `1px solid ${BRAND.border}` : undefined,
@@ -618,34 +617,109 @@ const TracingVisual: React.FC<{ seed: number }> = ({ seed }) => {
   );
 };
 
-const ApiVisual: React.FC<{ seed: number }> = ({ seed }) => (
-  <div
-    style={{
-      position: "absolute",
-      inset: "12% 8%",
-      padding: "32px 36px",
-      borderRadius: 22,
-      border: "1px solid rgba(255,255,255,0.1)",
-      background: "rgba(0,0,0,0.35)",
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-    }}
-  >
-    {["GET /health", "POST /orders", "GET /metrics"].map((route, i) => (
-      <div
-        key={route}
-        style={{
-          display: "flex",
-          gap: 14,
-          marginBottom: 16,
-          opacity: i === seed % 3 ? 1 : 0.55,
-        }}
-      >
-        <span style={{ color: BRAND.sky, fontFamily: "monospace", fontSize: 22 }}>{route.split(" ")[0]}</span>
-        <span style={{ color: BRAND.muted, fontFamily: "monospace", fontSize: 22 }}>{route.split(" ")[1]}</span>
-      </div>
-    ))}
-  </div>
-);
+const ApiVisual: React.FC<{ seed: number }> = ({ seed }) => {
+  const routes = [
+    { method: "GET", path: "/users" },
+    { method: "POST", path: "/login" },
+    { method: "GET", path: "/health" },
+  ];
+  const active = seed % routes.length;
+
+  return (
+    <svg
+      viewBox="0 0 520 220"
+      width="100%"
+      height="100%"
+      preserveAspectRatio="xMidYMid meet"
+      style={{ display: "block" }}
+    >
+      <defs>
+        <marker id="api-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill={BRAND.primary} />
+        </marker>
+        <linearGradient id="api-hub" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor={BRAND.primaryLight} />
+          <stop offset="100%" stopColor="#FFFFFF" />
+        </linearGradient>
+      </defs>
+
+      {/* Client */}
+      <rect x="24" y="72" width="108" height="64" rx="14" fill="#FFFFFF" stroke={BRAND.primarySoft} strokeWidth="2" />
+      <text x="78" y="100" textAnchor="middle" fontSize="15" fontWeight="700" fill={BRAND.text} fontFamily="system-ui">
+        Client
+      </text>
+      <text x="78" y="120" textAnchor="middle" fontSize="11" fill={BRAND.muted} fontFamily="system-ui">
+        Frontend
+      </text>
+
+      {/* API hub */}
+      <rect x="206" y="52" width="108" height="104" rx="16" fill="url(#api-hub)" stroke={BRAND.primary} strokeWidth="2.5" />
+      <text x="260" y="102" textAnchor="middle" fontSize="18" fontWeight="800" fill={BRAND.primary} fontFamily="system-ui">
+        API
+      </text>
+      <text x="260" y="124" textAnchor="middle" fontSize="11" fill={BRAND.muted} fontFamily="system-ui">
+        REST endpoint
+      </text>
+
+      {/* Server */}
+      <rect x="388" y="72" width="108" height="64" rx="14" fill="#FFFFFF" stroke={BRAND.primarySoft} strokeWidth="2" />
+      <text x="442" y="100" textAnchor="middle" fontSize="15" fontWeight="700" fill={BRAND.text} fontFamily="system-ui">
+        Server
+      </text>
+      <text x="442" y="120" textAnchor="middle" fontSize="11" fill={BRAND.muted} fontFamily="system-ui">
+        Backend
+      </text>
+
+      {/* Arrows */}
+      <line x1="132" y1="100" x2="198" y2="100" stroke={BRAND.primary} strokeWidth="2.5" markerEnd="url(#api-arrow)" />
+      <line x1="322" y1="100" x2="382" y2="100" stroke={BRAND.primary} strokeWidth="2.5" markerEnd="url(#api-arrow)" />
+      <text x="165" y="88" textAnchor="middle" fontSize="10" fill={BRAND.muted} fontFamily="system-ui">
+        request
+      </text>
+      <text x="352" y="88" textAnchor="middle" fontSize="10" fill={BRAND.muted} fontFamily="system-ui">
+        response
+      </text>
+
+      {/* Route examples */}
+      {routes.map((route, i) => {
+        const x = 52 + i * 148;
+        const isActive = i === active;
+        return (
+          <g key={route.path}>
+            <rect
+              x={x}
+              y="172"
+              width="132"
+              height="34"
+              rx="10"
+              fill={isActive ? BRAND.primaryLight : "#FFFFFF"}
+              stroke={isActive ? BRAND.primary : BRAND.border}
+              strokeWidth={isActive ? 2 : 1.5}
+            />
+            <text
+              x={x + 14}
+              y="194"
+              fontSize="13"
+              fontWeight="700"
+              fill={BRAND.primary}
+              fontFamily="ui-monospace, Menlo, monospace"
+            >
+              {route.method}
+            </text>
+            <text
+              x={x + 58}
+              y="194"
+              fontSize="13"
+              fontWeight="600"
+              fill={BRAND.muted}
+              fontFamily="ui-monospace, Menlo, monospace"
+            >
+              {route.path}
+            </text>
+          </g>
+        );
+      })}
+    </svg>
+  );
+};
 
